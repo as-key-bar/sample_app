@@ -1,7 +1,8 @@
+<% provide(:title, "About") %>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About | Ruby on Rails Tutorial Sample App</title>
+    <title><%= yield(:title) %> | Ruby on Rails Tutorial Sample App</title>
   </head>
   <body>
     <h1>About</h1>
@@ -11,7 +12,7 @@
       <a href="https://railstutorial.jp/screencast">screencast</a>
       to teach web development with
       <a href="https://rubyonrails.org/">Ruby on Rails</a>.
-      This is the sample app for the tutorial.
+      This is the sample application for the tutorial.
     </p>
   </body>
 </html>
