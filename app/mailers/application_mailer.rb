@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "user@realdomain.com"
+  default from: "iriyama-y@dwango.co.jp"
   layout "mailer"
 end
