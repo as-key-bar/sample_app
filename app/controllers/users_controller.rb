@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+
   def show
     @user = User.find(params[:id])
   end
-  
+
   def new
     @user = User.new
   end
@@ -12,11 +13,15 @@ class UsersController < ApplicationController
     if @user.save
       reset_session
       log_in @user
-      redirect_to @user
       flash[:success] = "Welcome to the Sample App!"
+      redirect_to @user
     else
       render 'new', status: :unprocessable_entity
     end
+  end
+
+  def edit
+    @user = User.find(params[:id])
   end
 
   private
