@@ -5,4 +5,3 @@ class AddActivationToUsers < ActiveRecord::Migration[7.0]
     add_column :users, :activated_at, :datetime
   end
 end
-rai
