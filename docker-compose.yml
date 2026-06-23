@@ -1,13 +1,15 @@
-version: '3.8'
 services:
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:0.14.3
     ports:
       - "4566:4566"   # edge
       - "4572:4572"   # legacy S3 (必要なら)
     environment:
       - SERVICES=s3
       - DEFAULT_REGION=us-east-1
-      - DATA_DIR=/tmp/localstack/data
+      - DATA_DIR=/var/localstack/data
     volumes:
-      - "./localstack-data:/tmp/localstack"
+      - localstack-data:/var/localstack/data
+
+volumes:
+  localstack-data:
