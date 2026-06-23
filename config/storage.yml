@@ -6,6 +6,15 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
+localstack:
+  service: S3
+  access_key_id: <%= ENV.fetch("LOCALSTACK_ACCESS_KEY_ID", "test") %>
+  secret_access_key: <%= ENV.fetch("LOCALSTACK_SECRET_ACCESS_KEY", "test") %>
+  region: <%= ENV.fetch("LOCALSTACK_REGION", "us-east-1") %>
+  bucket: <%= ENV.fetch("LOCALSTACK_BUCKET", "sample-app-bucket") %>
+  endpoint: <%= ENV.fetch("LOCALSTACK_ENDPOINT", "http://localhost:4566") %>
+  force_path_style: true
+
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3
