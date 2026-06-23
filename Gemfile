@@ -21,6 +21,7 @@ gem "puma",            "5.6.8"
 gem "bootsnap",        "1.16.0", require: false
 gem "sqlite3",         "1.6.1"
 gem "concurrent-ruby", "1.3.4"
+gem "aws-sdk-s3", "1.114.0", require: false
 
 group :development, :test do
   gem 'reline', '0.5.10'
@@ -47,7 +48,6 @@ end
 
 group :production do
   gem "pg", "1.3.5"
-  gem "aws-sdk-s3", "1.114.0", require: false
 end
 
 # Windows ではタイムゾーン情報用の tzinfo-data gem を含める必要があります
