@@ -7,4 +7,3 @@ module SessionHelpers
                                           remember_me: remember_me } }
   end
 end
-
