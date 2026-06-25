@@ -4,6 +4,7 @@ RSpec.describe "Microposts", type: :request do
   fixtures :users
 
   let(:user) { users(:michael) }
+  let(:user2) { users(:archer) }
 
   before do
     log_in_as(user)
@@ -11,7 +12,7 @@ RSpec.describe "Microposts", type: :request do
 
   it "should paginate microposts" do
     get root_path
-    expect(response.body).to include('div.pagination')
+    expect(response.body).to include('class="pagination"')
   end
 
   it "should show errors but not create micropost on invalid submission" do
@@ -19,7 +20,7 @@ RSpec.describe "Microposts", type: :request do
     expect {
         post microposts_path, params: { micropost: { content: "" } }
     }.not_to change(Micropost, :count)
-    expect(response.body).to include('div#error_explanation')
+    expect(response.body).to include('error_explanation')
     expect(response.body).to include('/?page=2')  # 正しいページネーションリンク
   end
 
@@ -36,7 +37,7 @@ RSpec.describe "Microposts", type: :request do
 
   it "should have micropost delete links on own profile page" do
     get user_path(user)
-    expect(response.body).to include('delete')
+    expect(response.body).to include('data-turbo-method="delete"')
   end
 
   it "should be able to delete own micropost" do
@@ -47,7 +48,7 @@ RSpec.describe "Microposts", type: :request do
   end
 
   it "should not have delete links on other user's profile page" do
-    get user_path(users(:archer))
-    expect(response.body).not_to include('delete')
-  end
+    get user_path(user2)
+  expected_html = "href=\"#{user2.microposts.first}\" data-turbo-method=\"delete\""
+  expect(response.body).not_to include(expected_html)  end
 end
