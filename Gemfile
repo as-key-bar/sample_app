@@ -5,6 +5,7 @@ ruby "3.2.9"
 
 gem "rails",           "7.0.4.3"
 gem 'rspec-rails'
+gem "capybara",        "3.38.0"
 gem "image_processing",           "1.12.2"
 gem "active_storage_validations", "0.9.8"
 gem "bcrypt",          "3.1.18"
