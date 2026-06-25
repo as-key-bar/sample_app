@@ -7,25 +7,25 @@ RSpec.describe StaticPagesController, type: :request do
   it "should get home" do
     get root_url
     expect(response).to be_successful
-    expect(response).to have_selector "title", text: "Ruby on Rails Tutorial Sample App"
+    expect(response.body).to include("<title>#{base_title}</title>")
   end
 
   it "should get help" do
     get help_url
     expect(response).to be_successful
-    expect(response).to have_selector("title", text: "Help | #{base_title}")
+    expect(response.body).to include("<title>Help | #{base_title}</title>")
   end
 
   it "should get about" do
     get about_url
     expect(response).to be_successful
-    expect(response).to have_selector("title", text: "About | #{base_title}")
+    expect(response.body).to include("<title>About | #{base_title}</title>")
   end
 
   it "should get contact" do
     get contact_url
     expect(response).to be_successful
-    expect(response).to have_selector("title", text: "Contact | #{base_title}")
+    expect(response.body).to include("<title>Contact | #{base_title}</title>")
   end
 
   it "should get root" do
