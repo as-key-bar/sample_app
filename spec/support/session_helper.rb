@@ -6,4 +6,9 @@ module SessionHelpers
                                           password: password,
                                           remember_me: remember_me } }
   end
+
+  def is_logged_in?
+    # RSpecのRequest Specでも、sessionオブジェクトはそのまま覗けます
+    !session[:user_id].nil?
+  end
 end
