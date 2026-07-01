@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Block, type: :model do
 
   fixtures :users
-  block = Block.new(blocker_id: users(:michael).id, blocked_id: users(:archer).id)
+  let(:block) { Block.new(blocker_id: users(:michael).id, blocked_id: users(:archer).id) }
 
   it "should be valid" do
     expect(block).to be_valid

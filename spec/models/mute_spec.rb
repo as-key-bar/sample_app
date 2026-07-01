@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Mute, type: :model do
 
   fixtures :users
-  mute = Mute.new(muter_id: users(:michael).id, muted_id: users(:archer).id)
+  let(:mute) { Mute.new(muter_id: users(:michael).id, muted_id: users(:archer).id) }
 
   it "should be valid" do
     expect(mute).to be_valid
