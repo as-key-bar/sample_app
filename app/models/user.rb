@@ -133,6 +133,37 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  # ユーザーをミュートする
+  def mute(other_user)
+    muted << other_user unless self == other_user
+  end
+
+  # ユーザーをミュート解除する
+  def unmute(other_user)
+    muted.delete(other_user)
+  end
+
+  # 現在のユーザーが他のユーザーをミュートしていればtrueを返す
+  def muted?(other_user)
+    muted.include?(other_user)
+  end
+
+  # ユーザーをブロックする
+  def block(other_user)
+    blocked << other_user unless self == other_user
+  end
+
+  # ユーザーをブロック解除する
+  def unblock(other_user)
+    blocked.delete(other_user)
+  end
+
+  # 現在のユーザーが他のユーザーをブロックしていればtrueを返す
+  def blocked?(other_user)
+    blocked.include?(other_user)
+  end
+
+
   private
 
     # メールアドレスをすべて小文字にする
