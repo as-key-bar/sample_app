@@ -10,6 +10,8 @@
   resources :users do
     member do
       get :following, :followers
+      get :muteing, :muters
+      get :blocking, :blockers
     end
   end
   resources :account_activations, only: [:edit]
