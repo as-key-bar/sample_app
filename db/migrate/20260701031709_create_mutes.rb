@@ -6,5 +6,8 @@ class CreateMutes < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+    add_index :mutes, :muter_id
+    add_index :mutes, :muted_id
+    add_index :mutes, [:muter_id, :muted_id], unique: true
   end
 end
