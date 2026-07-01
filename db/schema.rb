@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_06_23_031813) do
+ActiveRecord::Schema[7.0].define(version: 2026_07_01_031835) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,16 @@ ActiveRecord::Schema[7.0].define(version: 2026_06_23_031813) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "blocks", force: :cascade do |t|
+    t.integer "blocker_id"
+    t.integer "blocked_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blocked_id"], name: "index_blocks_on_blocked_id"
+    t.index ["blocker_id", "blocked_id"], name: "index_blocks_on_blocker_id_and_blocked_id", unique: true
+    t.index ["blocker_id"], name: "index_blocks_on_blocker_id"
+  end
+
   create_table "microposts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id", null: false
@@ -46,6 +56,16 @@ ActiveRecord::Schema[7.0].define(version: 2026_06_23_031813) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
+  end
+
+  create_table "mutes", force: :cascade do |t|
+    t.integer "muter_id"
+    t.integer "muted_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["muted_id"], name: "index_mutes_on_muted_id"
+    t.index ["muter_id", "muted_id"], name: "index_mutes_on_muter_id_and_muted_id", unique: true
+    t.index ["muter_id"], name: "index_mutes_on_muter_id"
   end
 
   create_table "relationships", force: :cascade do |t|
