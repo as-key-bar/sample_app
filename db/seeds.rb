@@ -36,3 +36,20 @@ following = users[2..50]
 followers = users[3..40]
 following.each { |followed| user.follow(followed) }
 followers.each { |follower| follower.follow(user) }
+
+
+# ユーザーミュートのリレーションシップを作成する
+users = User.all
+user  = users.first
+muted = users[51..75]
+muters = users[76...100]
+muted.each { |muted_user| user.mute(muted_user) }
+muters.each { |muter| muter.mute(user) }
+
+# ユーザーブロックのリレーションシップを作成する
+users = User.all
+user  = users.first
+blocked = users[62..75]
+blockers = users[76..90]
+blocked.each { |blocked_user| user.block(blocked_user) }
+blockers.each { |blocker| blocker.block(user) }
