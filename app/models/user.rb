@@ -11,15 +11,15 @@ class User < ApplicationRecord
     attr_accessor :remember_token, :activation_token, :reset_token
   before_save { self.email = email.downcase }
 
-  has_many :active_relationships, class_name:  "Mute",
+  has_many :active_mutes, class_name:  "Mute",
                                   foreign_key: "muter_id",
                                   dependent:   :destroy
-  has_many :active_relationships, class_name:  "Block",
+  has_many :active_blocks, class_name:  "Block",
                                   foreign_key: "blocker_id",
                                   dependent:   :destroy
-  has_many :active_relationships, class_name:  "Block",
-                                  foreign_key: "blocked_id",
-                                  dependent:   :destroy
+  has_many :passive_blocks, class_name:  "Block",
+                                   foreign_key: "blocked_id",
+                                   dependent:   :destroy
 
 
 
