@@ -21,7 +21,7 @@ class User < ApplicationRecord
                                    foreign_key: "blocked_id",
                                    dependent:   :destroy
   has_many :muteing, through: :active_mutes,  source: :muted
-  has_many :blocking, through: :active_blocks, source: :blocked
+  has_many :blockeing, through: :active_blocks, source: :blocked
   has_many :blocked, through: :passive_blocks, source: :blocking
 
 
@@ -135,32 +135,32 @@ class User < ApplicationRecord
 
   # ユーザーをミュートする
   def mute(other_user)
-    muted << other_user unless self == other_user
+    muteing << other_user unless self == other_user
   end
 
   # ユーザーをミュート解除する
   def unmute(other_user)
-    muted.delete(other_user)
+    muteing.delete(other_user)
   end
 
   # 現在のユーザーが他のユーザーをミュートしていればtrueを返す
-  def muted?(other_user)
-    muted.include?(other_user)
+  def muteing?(other_user)
+    muteing.include?(other_user)
   end
 
   # ユーザーをブロックする
   def block(other_user)
-    blocked << other_user unless self == other_user
+    blocking << other_user unless self == other_user
   end
 
   # ユーザーをブロック解除する
   def unblock(other_user)
-    blocked.delete(other_user)
+    blocking.delete(other_user)
   end
 
   # 現在のユーザーが他のユーザーをブロックしていればtrueを返す
-  def blocked?(other_user)
-    blocked.include?(other_user)
+  def blocking?(other_user)
+    blocking.include?(other_user)
   end
 
 
