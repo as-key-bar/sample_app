@@ -11,6 +11,19 @@ class User < ApplicationRecord
     attr_accessor :remember_token, :activation_token, :reset_token
   before_save { self.email = email.downcase }
 
+  has_many :active_relationships, class_name:  "Mute",
+                                  foreign_key: "muter_id",
+                                  dependent:   :destroy
+  has_many :active_relationships, class_name:  "Block",
+                                  foreign_key: "blocker_id",
+                                  dependent:   :destroy
+  has_many :active_relationships, class_name:  "Block",
+                                  foreign_key: "blocked_id",
+                                  dependent:   :destroy
+
+
+
+
   before_save   :downcase_email
   before_create :create_activation_digest
   validates :name,  presence: true, length: { maximum: 50 }
