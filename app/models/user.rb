@@ -21,7 +21,7 @@ class User < ApplicationRecord
                                    foreign_key: "blocked_id",
                                    dependent:   :destroy
   has_many :muteing, through: :active_mutes,  source: :muted
-  has_many :blockeing, through: :active_blocks, source: :blocked
+  has_many :blocking, through: :active_blocks, source: :blocked
   has_many :blocked, through: :passive_blocks, source: :blocking
 
 

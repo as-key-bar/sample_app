@@ -1,4 +1,4 @@
 class Block < ApplicationRecord
-  belongs_to :blocking, class_name: "User"
-  belongs_to :blocked, class_name: "User"
+  belongs_to :blocking, class_name: "User", foreign_key: "blocker_id"
+  belongs_to :blocked, class_name: "User", foreign_key: "blocked_id"
 end
