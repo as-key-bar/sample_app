@@ -1,4 +1,4 @@
-<%= form_with(model: current_user.active_mutes.find_by(muteed: @user),
+<%= form_with(model: current_user.active_mutes.find_by(muted: @user),
               html: { method: :delete }) do |f| %>
   <%= f.submit "Unmute", class: "btn" %>
 <% end %>
