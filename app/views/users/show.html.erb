@@ -10,10 +10,10 @@
     <section class="stats">
       <%= render 'shared/stats' %>
     </section>
-    <%= link_to "mute", @user, data: { "turbo-method": :mute} %>
-    <%= link_to "block", @user, data: { "turbo-method": :block,
-                                      turbo_confirm: "You sure?" } %>                                          
-
+    <div class="muteandblock">
+      <%= render 'mute_form' if logged_in? %>
+      <%= render 'block_form' if logged_in? %>
+    </div>
   </aside>
   <div class="col-md-8">
     <%= render 'follow_form' if logged_in? %>
