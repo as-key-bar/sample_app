@@ -18,5 +18,7 @@
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :microposts,          only: [:create, :destroy]
   resources :relationships,       only: [:create, :destroy] 
+  resources :mutes,       only: [:create, :destroy] 
+  resources :blocks,       only: [:create, :destroy] 
   get '/microposts', to: 'static_pages#home'
 end
