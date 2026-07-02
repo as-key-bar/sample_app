@@ -5,4 +5,7 @@
     | <%= link_to "delete", user, data: { "turbo-method": :delete,
                                           turbo_confirm: "You sure?" } %>
   <% end %>
+| <%= link_to "mute", user, data: { "turbo-method": :mute} %>
+| <%= link_to "block", user, data: { "turbo-method": :block,
+                                          turbo_confirm: "You sure?" } %>                                          
 </li>
