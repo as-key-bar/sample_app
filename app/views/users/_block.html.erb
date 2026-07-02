@@ -1,4 +1,4 @@
-<%= form_with(model: current_user.active_relationships.build) do |f| %>
+<%= form_with(model: current_user.active_blocks.build) do |f| %>
   <div><%= hidden_field_tag :blocked_id, @user.id %></div>
   <%= f.submit "block", class: "btn btn-primary" %>
 <% end %>
