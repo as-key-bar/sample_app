@@ -113,9 +113,12 @@ class User < ApplicationRecord
   def feed
     following_ids = "SELECT followed_id FROM relationships
                      WHERE  follower_id = :user_id"
-    Micropost.where("user_id IN (#{following_ids})
+    base_feed = Micropost.where("user_id IN (#{following_ids})
                      OR user_id = :user_id", user_id: id)
              .includes(:user, image_attachment: :blob)
+    
+    base_feed.where.not(user_id: blocking.select(:blocked_id))
+            .where.not(user_id: muteing.select(:muted_id))
   end
 
   # ユーザーをフォローする
