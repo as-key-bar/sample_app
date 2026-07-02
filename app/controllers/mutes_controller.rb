@@ -1,0 +1,2 @@
+class MutesController < ApplicationController
+end
