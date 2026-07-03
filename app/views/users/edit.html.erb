@@ -25,5 +25,12 @@
       <%= gravatar_for @user %>
       <a href="https://gravatar.com/emails">change</a>
     </div>
+    <a href="<%= muting_user_path(@user) %>">
+        Muting Users
+    </a>
+     | 
+    <a href="<%= blocking_user_path(@user) %>">
+        Blocking Users
+    </a>
   </div>
 </div>

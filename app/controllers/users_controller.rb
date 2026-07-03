@@ -57,28 +57,28 @@ class UsersController < ApplicationController
     @title = "Following"
     @user  = User.find(params[:id])
     @users = @user.following.paginate(page: params[:page])
-    render 'show_follow'
+    render 'show_user_list'
   end
 
   def followers
     @title = "Followers"
     @user  = User.find(params[:id])
     @users = @user.followers.paginate(page: params[:page])
-    render 'show_follow'
+    render 'show_user_list'
   end
 
   def blocking
     @title = "Blocking"
     @user  = User.find(params[:id])
     @users = @user.blocking.paginate(page: params[:page])
-    render 'show_follow'
+    render 'show_user_list'
   end
 
   def muting
     @title = "Muting"
     @user  = User.find(params[:id])
     @users = @user.muting.paginate(page: params[:page])
-    render 'show_follow'
+    render 'show_user_list'
   end
 
   private
