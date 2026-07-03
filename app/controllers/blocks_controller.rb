@@ -4,6 +4,7 @@ class BlocksController < ApplicationController
     user = User.find(params[:blocked_id])
     current_user.block(user)
     user.unfollow(current_user) if user.following?(current_user)
+    current_user.unfollow(user) if current_user.following?(user)
     redirect_back(fallback_location: root_path) 
     # redirect_to user
   end
