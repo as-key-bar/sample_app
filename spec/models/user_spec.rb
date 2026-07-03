@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe User, type: :model do
 
-fixtures :users, :microposts, :relationships
+  fixtures :users, :microposts, :relationships
 
   let(:user) { users(:michael) }
 

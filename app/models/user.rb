@@ -123,7 +123,7 @@ class User < ApplicationRecord
 
   # ユーザーをフォローする
   def follow(other_user)
-    if !blocking?(other_user)
+    if !blocked?(other_user)
       following << other_user unless self == other_user
     end
   end
@@ -168,6 +168,10 @@ class User < ApplicationRecord
     blocking.include?(other_user)
   end
 
+  # 現在のユーザーが他のユーザーをブロックしていればtrueを返す
+  def blocked?(other_user)
+    other_user.blocking.include?(self)
+  end
 
   private
 
