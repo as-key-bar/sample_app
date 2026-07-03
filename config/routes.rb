@@ -9,9 +9,7 @@
   delete "/logout",  to: "sessions#destroy"
   resources :users do
     member do
-      get :following, :followers
-      get :muting, :muters
-      get :blocking, :blockers
+      get :following, :followers, :muting, :blocking
     end
   end
   resources :account_activations, only: [:edit]
