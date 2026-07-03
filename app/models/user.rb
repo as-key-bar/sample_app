@@ -123,9 +123,10 @@ class User < ApplicationRecord
 
   # ユーザーをフォローする
   def follow(other_user)
-    if !blocked?(other_user)
-      following << other_user unless self == other_user
-    end
+    return false if blocked?(other_user)
+    return false if self == other_user
+    following << other_user
+    true
   end
 
   # ユーザーをフォロー解除する
