@@ -1,6 +1,6 @@
 <% unless current_user?(@user) %>
   <div id="mute_form">
-  <% if current_user.muteing?(@user) %>
+  <% if current_user.muting?(@user) %>
     <%= render 'unmute' %>
   <% else %>
     <%= render 'mute' %>

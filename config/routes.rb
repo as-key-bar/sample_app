@@ -10,7 +10,7 @@
   resources :users do
     member do
       get :following, :followers
-      get :muteing, :muters
+      get :muting, :muters
       get :blocking, :blockers
     end
   end

@@ -20,7 +20,7 @@ class User < ApplicationRecord
   has_many :passive_blocks, class_name:  "Block",
                                    foreign_key: "blocked_id",
                                    dependent:   :destroy
-  has_many :muteing, through: :active_mutes,  source: :muted
+  has_many :muting, through: :active_mutes,  source: :muted
   has_many :blocking, through: :active_blocks, source: :blocked
   has_many :blocked, through: :passive_blocks, source: :blocking
 
@@ -118,7 +118,7 @@ class User < ApplicationRecord
              .includes(:user, image_attachment: :blob)
     
     base_feed.where.not(user_id: blocking.select(:blocked_id))
-            .where.not(user_id: muteing.select(:muted_id))
+            .where.not(user_id: muting.select(:muted_id))
   end
 
   # ユーザーをフォローする
@@ -140,17 +140,17 @@ class User < ApplicationRecord
 
   # ユーザーをミュートする
   def mute(other_user)
-    muteing << other_user unless self == other_user
+    muting << other_user unless self == other_user
   end
 
   # ユーザーをミュート解除する
   def unmute(other_user)
-    muteing.delete(other_user)
+    muting.delete(other_user)
   end
 
   # 現在のユーザーが他のユーザーをミュートしていればtrueを返す
-  def muteing?(other_user)
-    muteing.include?(other_user)
+  def muting?(other_user)
+    muting.include?(other_user)
   end
 
   # ユーザーをブロックする
