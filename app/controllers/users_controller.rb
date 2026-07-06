@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def show  
     @user = User.find(params[:id])  
-    if current_user != @user
+    if current_user != @user && current_user != nil
       if !current_user.blocked?(@user)
         @microposts = @user.microposts.paginate(page: params[:page])
       else
