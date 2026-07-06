@@ -22,7 +22,7 @@ RSpec.describe "Relationships", type: :request do
         log_in_as(user) # ログイン状態を作るヘルパーメソッド（※補足参照）
       end
 
-      it "標準的なHTMLリクエストでユーザーをフォローできること" do
+      it "ユーザーをフォローできること" do
         expect {
           post relationships_path, params: { followed_id: other_user.id }
         }.to change(Relationship, :count).by(1)
@@ -37,6 +37,19 @@ RSpec.describe "Relationships", type: :request do
         
         expect(response).to have_http_status(:ok)
         expect(response.media_type).to eq Mime[:turbo_stream].to_s
+      end
+
+      context "ブロックされている場合" do
+        before do
+          other_user.active_blocks.create!(blocked_id: user.id)
+        end
+          
+        it "フォローできないこと" do
+          expect {
+            post relationships_path, params: { followed_id: other_user.id }
+          }.to change(Relationship, :count).by(0)
+
+        end
       end
     end
   end
