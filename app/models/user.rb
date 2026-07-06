@@ -117,8 +117,10 @@ class User < ApplicationRecord
                      OR user_id = :user_id", user_id: id)
              .includes(:user, image_attachment: :blob)
     
-    base_feed.where.not(user_id: blocking.select(:blocked_id))
-            .where.not(user_id: muting.select(:muted_id))
+    base_feed
+          .where.not(user_id: blocking.select(:blocked_id))
+          .where.not(user_id: muting.select(:muted_id))
+          .where.not(user_id: blocked.select(:blocker_id))
   end
 
   # ユーザーをフォローする
