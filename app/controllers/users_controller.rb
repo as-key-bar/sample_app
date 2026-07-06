@@ -8,13 +8,17 @@ class UsersController < ApplicationController
       @users = User.paginate(page: params[:page])
   end
 
-  def show
-    if current_user != @user || !current_user.blocked?(@user)
-      @user = User.find(params[:id])
-      @microposts = @user.microposts.paginate(page: params[:page])
+  def show  
+    @user = User.find(params[:id])  
+    if current_user != @user
+      if !current_user.blocked?(@user)
+        @microposts = @user.microposts.paginate(page: params[:page])
+      else
+        flash[:warning] = "You are blocked by this user."
+        redirect_back fallback_location: root_url
+      end
     else
-      flash[:warning] = "You are blocked by this user."
-      redirect_to root_url
+      @microposts = @user.microposts.paginate(page: params[:page])
     end
   end
 
