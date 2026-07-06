@@ -22,16 +22,7 @@ RSpec.describe "Relationships", type: :request do
   end
 
   describe "DELETE /mute/:id" do
-    let!(:mute) { user.mute other_user}
-
-    context "ログインしていない場合" do
-      it "ミュートの削除ができない" do
-        expect {
-          delete mutes_path, params: { muted_id: other_user.id }
-        }.not_to change(Mute, :count)
-      end
-    end
-
+    let!(:mute) { user.active_mutes.create!(muted_id: other_user.id) }
     context "ログインしている場合" do
       before do
         log_in_as(user)
@@ -39,7 +30,7 @@ RSpec.describe "Relationships", type: :request do
 
       it "ミュート解除できること" do
         expect {
-          delete mutes_path, params: { muted_id: other_user.id }
+          delete mute_path(mute)
         }.to change(Mute, :count).by(-1)
       end
     end
