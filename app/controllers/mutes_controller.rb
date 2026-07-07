@@ -10,12 +10,10 @@ class MutesController < ApplicationController
   end
 
   def destroy
-    if current_user.muting?(@user)
-    mute = current_user.active_mutes.find(params[:id])
-      user = mute.muted
-      current_user.unmute(user)
-      # redirect_to user, status: :see_other
-      redirect_back(fallback_location: root_path) 
-    end
+  mute = current_user.active_mutes.find(params[:id])
+    user = mute.muted
+    current_user.unmute(user)
+    # redirect_to user, status: :see_other
+    redirect_back(fallback_location: root_path) 
   end
 end
