@@ -15,7 +15,7 @@ class UsersController < ApplicationController
         @microposts = @user.microposts.paginate(page: params[:page])
       else
         flash[:warning] = "You are blocked by this user."
-        redirect_back fallback_location: root_url
+        @microposts = Micropost.none.paginate(page: params[:page])
       end
     else
       @microposts = @user.microposts.paginate(page: params[:page])
