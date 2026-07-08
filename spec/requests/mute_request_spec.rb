@@ -36,6 +36,12 @@ RSpec.describe "Relationships", type: :request do
           post mutes_path, params: { muted_id: invalid_user_id }        
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
+
+      it "自分自身をミュートできないか" do
+        expect {
+          post mutes_path, params: { muted_id: user.id }
+        }.not_to change(Mute, :count)
+      end
     end
   end
 
