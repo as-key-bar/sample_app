@@ -38,11 +38,20 @@ RSpec.describe "Relationships", type: :request do
         expect(response).to have_http_status(:bad_request)
       end
 
-      it "自分自身をミュートできないか" do
+      it "自分自身をミュートできない" do
         expect {
           post mutes_path, params: { muted_id: user.id }
         }.not_to change(Mute, :count)
         expect(response).to have_http_status(:bad_request)
+      end
+
+      it "すでにミュートしているユーザーを再度ミュートできない" do
+        user.mute(other_user) 
+        expect {
+          post user_path(other_user)
+          post mutes_path, params: { muted_id: other_user.id }
+        }.not_to change(Mute, :count)
+        expect(response).to redirect_to(user_path(other_user))
       end
     end
   end
