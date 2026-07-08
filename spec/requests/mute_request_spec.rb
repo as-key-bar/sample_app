@@ -35,13 +35,14 @@ RSpec.describe "Relationships", type: :request do
         expect {
           post mutes_path, params: { muted_id: invalid_user_id }        
         }.to change(Mute, :count).by(0)
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:bad_request)
       end
 
       it "自分自身をミュートできないか" do
         expect {
           post mutes_path, params: { muted_id: user.id }
         }.not_to change(Mute, :count)
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end
