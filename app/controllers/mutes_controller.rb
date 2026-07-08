@@ -2,10 +2,14 @@ class MutesController < ApplicationController
   before_action :logged_in_user
   def create
     if !current_user.muting?(@user)
-      user = User.find(params[:muted_id])
-      current_user.mute(user)
-      # redirect_to user
-      redirect_back(fallback_location: root_path) 
+      if User.exists?(params[:muted_id])
+        user = User.find(params[:muted_id])
+        current_user.mute(user)
+        # redirect_to user
+        redirect_back(fallback_location: root_path) 
+      else
+        redirect_to root_path, status: :not_found
+      end
     end
   end
 

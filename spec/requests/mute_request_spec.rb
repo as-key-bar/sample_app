@@ -34,7 +34,8 @@ RSpec.describe "Relationships", type: :request do
       it "存在しないアカウントへのミュート" do
         expect {
           post mutes_path, params: { muted_id: invalid_user_id }        
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to change(Mute, :count).by(0)
+        expect(response).to have_http_status(:not_found)
       end
 
       it "自分自身をミュートできないか" do
