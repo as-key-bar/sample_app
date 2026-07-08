@@ -7,6 +7,16 @@ RSpec.describe "Relationships", type: :request do
   let(:other_user) { users(:archer) }
 
   describe "POST /mute" do
+    context "ログインしていない場合" do
+      it "ミュートできないか" do
+        expect {
+          post mutes_path, params: { muted_id: other_user.id }
+        }.not_to change(Mute, :count)
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+
     context "ログインしている場合" do
       before do
         log_in_as(user)
@@ -18,11 +28,28 @@ RSpec.describe "Relationships", type: :request do
         }.to change(Mute, :count).by(1)
 
       end
+
+      let(:invalid_user_id) { 0 }
+
+      it "存在しないアカウントへのミュート" do
+        expect {
+          post mutes_path, params: { muted_id: invalid_user_id }        
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 
   describe "DELETE /mute/:id" do
     let!(:mute) { user.active_mutes.create!(muted_id: other_user.id) }
+    context "ログインしていない場合" do
+      it "ミュート解除できないか" do
+        expect {
+          delete mute_path(mute)
+        }.not_to change(Mute, :count)
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
     context "ログインしている場合" do
       before do
         log_in_as(user)
