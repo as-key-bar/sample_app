@@ -87,6 +87,18 @@ RSpec.describe "Relationships", type: :request do
           delete mute_path(mute)
         }.to change(Mute, :count).by(-1)
       end
+
+      it "すでにミュートしていないユーザーを再度ミュートできない" do
+        user.mute(other_user) 
+        user.unmute(other_user) # ミュート解除
+        expect {
+          delete mute_path(mute),
+              headers: { "HTTP_REFERER" => user_path(other_user) }
+        }.not_to change(Mute, :count)
+
+        expect(response).to redirect_to(user_path(other_user))      
+      end
+
     end
   end
 end
