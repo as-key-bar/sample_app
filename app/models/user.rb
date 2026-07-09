@@ -164,6 +164,8 @@ class User < ApplicationRecord
   def block(other_user)
     unless blocking?(other_user) || self == other_user
       blocking << other_user
+      self.unfollow(other_user) if following?(other_user)
+      other_user.unfollow(self) if other_user.following?(self)
     end
   end
 

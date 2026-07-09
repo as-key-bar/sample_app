@@ -62,6 +62,16 @@ RSpec.describe "Relationships", type: :request do
 
         expect(response).to redirect_to(user_path(other_user))      
       end      
+
+      it "ブロックするとフォロー関係が解除されること" do
+        expect {
+          post blocks_path, params: { blocked_id: other_user.id }
+        }.to change(Block, :count).by(1)
+
+        expect(user.following?(other_user)).to be_falsey
+        expect(other_user.following?(user)).to be_falsey
+      end
+
     end
   end
 
