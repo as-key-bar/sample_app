@@ -96,6 +96,17 @@ RSpec.describe "Relationships", type: :request do
           delete block_path(block)
         }.to change(Block, :count).by(-1)
       end
+
+      it "まだブロックしていないユーザーを再度ブロックできない" do
+        user.block(other_user) 
+        user.unblock(other_user) # ブロック解除
+        expect {
+          delete block_path(block),
+              headers: { "HTTP_REFERER" => user_path(other_user) }
+        }.not_to change(Block, :count)
+
+        expect(response).to redirect_to(user_path(other_user))      
+      end
     end
   end
 end

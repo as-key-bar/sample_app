@@ -119,4 +119,18 @@ RSpec.describe User, type: :model do
     end    
   end
 
+  it "ブロックしているユーザーのポスト非表示を確認" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    
+    michael.follow(archer)
+    michael.block(archer)
+
+    archer.microposts.each do |post_muted|
+      expect(michael.feed.include?(post_muted)).to be_falsey
+    end    
+  end
+
+
+  
 end
