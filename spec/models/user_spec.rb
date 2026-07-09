@@ -143,5 +143,16 @@ RSpec.describe User, type: :model do
     end    
   end
 
+  it "ブロック済みのユーザーが自身をフォローしようとした際に、エラーメッセージを表示して弾く" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    
+    michael.block(archer)
 
+    expect {
+      archer.follow(michael)
+    }.not_to change(michael.followers, :count)
+  end
+
+  
 end
