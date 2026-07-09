@@ -32,6 +32,15 @@ RSpec.describe "Relationships", type: :request do
 
   describe "DELETE /block/:id" do
     let!(:block) { user.active_blocks.create!(blocked_id: other_user.id) }
+    context "ログインしていない場合" do
+      it "ブロック解除できないか" do
+        expect {
+          delete block_path(block)
+        }.not_to change(Block, :count)
+        expect(response).to redirect_to(login_path)
+      end
+    end
+    
     context "ログインしている場合" do
       before do
         log_in_as(user)
