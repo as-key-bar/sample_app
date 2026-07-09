@@ -45,6 +45,14 @@ RSpec.describe "Relationships", type: :request do
         expect(response).to have_http_status(:bad_request)
       end
 
+      it "不正な文字列をIDとして渡した場合ミュートできない" do
+        expect {
+          post mutes_path, params: { muted_id: "invalid" }
+        }.not_to change(Mute, :count)
+        expect(response).to have_http_status(:bad_request)
+      end
+
+
       it "すでにミュートしているユーザーを再度ミュートできない" do
         user.mute(other_user) 
         expect {
@@ -53,7 +61,8 @@ RSpec.describe "Relationships", type: :request do
               headers: { "HTTP_REFERER" => user_path(other_user) }
         }.not_to change(Mute, :count)
 
-        expect(response).to redirect_to(user_path(other_user))      end
+        expect(response).to redirect_to(user_path(other_user))      
+      end
     end
   end
 
