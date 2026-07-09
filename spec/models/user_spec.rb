@@ -165,4 +165,13 @@ RSpec.describe User, type: :model do
     end    
   end
 
+  it "ブロック済みのユーザーのフォローボタンが無効化される" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    
+    michael.block(archer)
+
+    expect(michael.following?(archer)).to be_falsey
+  end
+
 end
