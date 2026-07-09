@@ -48,11 +48,12 @@ RSpec.describe "Relationships", type: :request do
       it "すでにミュートしているユーザーを再度ミュートできない" do
         user.mute(other_user) 
         expect {
-          post user_path(other_user)
-          post mutes_path, params: { muted_id: other_user.id }
+          post mutes_path,
+              params: { muted_id: other_user.id },
+              headers: { "HTTP_REFERER" => user_path(other_user) }
         }.not_to change(Mute, :count)
-        expect(response).to redirect_to(user_path(other_user))
-      end
+
+        expect(response).to redirect_to(user_path(other_user))      end
     end
   end
 
