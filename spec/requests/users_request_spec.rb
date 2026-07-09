@@ -40,4 +40,17 @@ RSpec.describe UsersController, type: :request do
     get followers_user_path(user)
     expect(response).to redirect_to(login_url)
   end
+
+  it "ミュートしているユーザー一覧ページの表示" do
+    log_in_as(user)
+    user.mute(other_user)
+
+    get muting_user_path(user)
+    expect(response).to be_successful
+    expect(user.muting).not_to be_empty
+    expect(response.body).to include(user.muting.count.to_s)
+    user.muting.each do |u|
+      expect(response.body).to include(u.name)
+    end
+  end
 end
