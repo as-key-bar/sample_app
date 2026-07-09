@@ -88,7 +88,7 @@ RSpec.describe "Relationships", type: :request do
         }.to change(Mute, :count).by(-1)
       end
 
-      it "すでにミュートしていないユーザーを再度ミュートできない" do
+      it "まだミュートしていないユーザーを再度ミュートできない" do
         user.mute(other_user) 
         user.unmute(other_user) # ミュート解除
         expect {
