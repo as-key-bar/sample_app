@@ -53,4 +53,19 @@ RSpec.describe UsersController, type: :request do
       expect(response.body).to include(u.name)
     end
   end
+
+  it "ブロックしているユーザー一覧ページの表示" do
+    log_in_as(user)
+    user.block(other_user)
+
+    get blocking_user_path(user)
+    expect(response).to be_successful
+    expect(user.blocking).not_to be_empty
+    expect(response.body).to include(user.blocking.count.to_s)
+    user.blocking.each do |u|
+      expect(response.body).to include(u.name)
+    end
+  end
+
+
 end
