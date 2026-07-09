@@ -7,6 +7,15 @@ RSpec.describe "Relationships", type: :request do
   let(:other_user) { users(:archer) }
 
   describe "POST /block" do
+    context "ログインしていない場合" do
+      it "ブロックできないか" do
+        expect {
+          post blocks_path, params: { blocked_id: other_user.id }
+        }.not_to change(Block, :count)
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
     context "ログインしている場合" do
       before do
         log_in_as(user)
