@@ -150,7 +150,9 @@ class User < ApplicationRecord
 
   # ユーザーをミュート解除する
   def unmute(other_user)
-    muting.delete(other_user)
+    if muting?(other_user)
+      muting.delete(other_user)
+    end
   end
 
   # 現在のユーザーが他のユーザーをミュートしていればtrueを返す
