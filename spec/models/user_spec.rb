@@ -103,6 +103,20 @@ RSpec.describe User, type: :model do
     # フォローしていないユーザーの投稿を確認
     archer.microposts.each do |post_unfollowed|
       expect(michael.feed.include?(post_unfollowed)).to be_falsey
-    end
+    end    
   end
+
+
+  it "ミュートしているユーザーのポスト非表示を確認" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    
+    michael.follow(archer)
+    michael.mute(archer)
+
+    archer.microposts.each do |post_muted|
+      expect(michael.feed.include?(post_muted)).to be_falsey
+    end    
+  end
+
 end
