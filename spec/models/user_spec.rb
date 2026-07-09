@@ -154,5 +154,15 @@ RSpec.describe User, type: :model do
     }.not_to change(michael.followers, :count)
   end
 
-  
+  it "ブロック済みのユーザーが自身のプロフィールにアクセスした際に、ポストが表示されないようにする" do
+    michael = users(:michael)
+    archer  = users(:archer)
+    
+    michael.block(archer)
+
+    archer.microposts.each do |post_muted|
+      expect(michael.feed.include?(post_muted)).to be_falsey
+    end    
+  end
+
 end
