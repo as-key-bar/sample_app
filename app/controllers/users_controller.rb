@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       else
         respond_to do |format|
           format.html do
-            flash[:warning] = "You are blocked by this user."
+            flash.now[:warning] = "You are blocked by this user."
           end
           format.turbo_stream { head :unprocessable_entity }
         end
