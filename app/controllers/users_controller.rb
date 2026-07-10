@@ -14,7 +14,12 @@ class UsersController < ApplicationController
       if !current_user.blocked?(@user)
         @microposts = @user.microposts.paginate(page: params[:page])
       else
-        flash[:warning] = "You are blocked by this user."
+        respond_to do |format|
+          format.html do
+            flash[:warning] = "You are blocked by this user."
+          end
+          format.turbo_stream { head :unprocessable_entity }
+        end
         @microposts = Micropost.none.paginate(page: params[:page])
       end
     else
