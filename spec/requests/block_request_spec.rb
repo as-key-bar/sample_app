@@ -97,7 +97,7 @@ RSpec.describe "Relationships", type: :request do
         }.to change(Block, :count).by(-1)
       end
 
-      it "まだブロックしていないユーザーを再度ブロックできない" do
+      it "ブロックしていないユーザーは、ブロック解除操作ができない" do
         user.block(other_user) 
         user.unblock(other_user) # ブロック解除
         expect {
