@@ -34,7 +34,7 @@ RSpec.describe "Relationships", type: :request do
         expect {
           post blocks_path, params: { blocked_id: invalid_user_id }        
         }.to change(Block, :count).by(0)
-        expect(response).to have_http_status(:bad_request)
+        expect(response).to have_http_status(:not_found)
       end
 
       it "自分自身をブロックできない" do

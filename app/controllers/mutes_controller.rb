@@ -2,16 +2,22 @@ class MutesController < ApplicationController
   before_action :logged_in_user
 
   def create
-    # user = User.find(params[:muted_id])
-    # if user.present? && current_user.id != params[:muted_id].to_i
-      
-    if User.exists?(params[:muted_id]) && current_user.id != params[:muted_id].to_i
-      user = User.find(params[:muted_id])
+    #idのバリデーション
+    if !params[:muted_id].to_s.match?(/\A\d+\z/)
+      redirect_to root_path, status: :bad_request
+      return
+    elsif current_user.id == params[:muted_id].to_i
+      redirect_to root_path, status: :bad_request
+      return
+    end
+
+    if user = User.find_by(id: params[:muted_id])
       current_user.mute(user)
       redirect_back(fallback_location: root_path) 
     else
-      redirect_to root_path, status: :bad_request
+      redirect_to root_path, status: :not_found
     end
+
   end
 
   def destroy
