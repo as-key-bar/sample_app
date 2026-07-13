@@ -115,9 +115,9 @@ class User < ApplicationRecord
                      WHERE  follower_id = :user_id"
     base_feed = Micropost.where("user_id IN (#{following_ids})
                      OR user_id = :user_id", user_id: id)
-             .includes(:user, image_attachment: :blob)
-    
+             
     base_feed
+          .includes(:user, image_attachment: :blob)
           .where.not(user_id: blocking.select(:blocked_id))
           .where.not(user_id: muting.select(:muted_id))
           .where.not(user_id: blocked.select(:blocker_id))
