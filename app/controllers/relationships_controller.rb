@@ -4,7 +4,7 @@ class RelationshipsController < ApplicationController
   def create
     @user = User.find(params[:followed_id])
     
-    unless current_user.follow(@user)
+    if !current_user.follow(@user)
       respond_to do |format|
         format.html do
           flash[:warning] = "This user was blocked or you are trying to follow yourself."
