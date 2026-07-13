@@ -10,20 +10,15 @@ class UsersController < ApplicationController
 
   def show  
     @user = User.find(params[:id])  
-    if current_user != @user && current_user != nil
-      if !current_user.blocked?(@user)
-        @microposts = @user.microposts.paginate(page: params[:page])
-      else
-        respond_to do |format|
-          format.html do
-            flash.now[:warning] = "You are blocked by this user."
-          end
-          format.turbo_stream { head :unprocessable_entity }
-        end
-        @microposts = Micropost.none.paginate(page: params[:page])
-      end
-    else
+    #ブロックされていない、もしくは未ログイン状態の場合（Twitter準拠）
+    if (current_user.present? && !current_user.blocked?(@user)) || !current_user.present? 
       @microposts = @user.microposts.paginate(page: params[:page])
+    #ブロックされている場合
+    elsif current_user.present? && current_user.blocked?(@user)
+      flash.now[:warning] = "You are blocked by this user."
+      @microposts = Micropost.none.paginate(page: params[:page])
+    else
+      redirect_to root_path, status: :bad_request
     end
   end
 
