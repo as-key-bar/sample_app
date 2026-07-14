@@ -3,7 +3,7 @@ class BlocksController < ApplicationController
   def create
 
     #idのバリデーション
-    if !params[:blocked_id].to_s.match?(/\A\d+\z/)
+    if !params[:blocked_id].match?(/\A\d+\z/)
       redirect_to root_path, status: :bad_request
       return
     elsif current_user.id == params[:blocked_id].to_i

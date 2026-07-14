@@ -3,7 +3,7 @@ class MutesController < ApplicationController
 
   def create
     #idのバリデーション
-    if !params[:muted_id].to_s.match?(/\A\d+\z/)
+    if !params[:muted_id].match?(/\A\d+\z/)
       redirect_to root_path, status: :bad_request
       return
     elsif current_user.id == params[:muted_id].to_i
