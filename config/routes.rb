@@ -4,7 +4,7 @@
   get    "/about",   to: "static_pages#about"
   get    "/contact", to: "static_pages#contact"
   get    "/microposts", to: "static_pages#home"
-  get    "/search",  to: "searches#search"
+  get    "/search",  to: "search#search"
   get    "/signup",  to: "users#new"
   get    "/login",   to: "sessions#new"
   post   "/login",   to: "sessions#create"
