@@ -1,6 +1,11 @@
-<% provide(:title) %>
 <div class="row">
-    <h1>
-      検索フォーム画面
-    </h1>
+  <h1>
+    検索フォーム画面
+  </h1>
+
+  <%= form_with url:search_path, method: :get do |f| %>
+    <%= f.label :query, "enter search query:" %>
+    <%= f.search_field :query %>
+    <%= f.submit "Search" %>
+  <% end %>
 </div>
