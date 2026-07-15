@@ -5,6 +5,7 @@
   get    "/contact", to: "static_pages#contact"
   get    "/signup",  to: "users#new"
   get    "/login",   to: "sessions#new"
+  get    "/search",  to: "searches#search"
   post   "/login",   to: "sessions#create"
   delete "/logout",  to: "sessions#destroy"
   resources :users do
