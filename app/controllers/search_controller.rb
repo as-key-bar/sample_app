@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   def search
-    if @query = params[:query]
+    if @query = params[:q]
       search_results
     else
       @title = "Search"

@@ -5,8 +5,8 @@
   </h1>
 
   <%= form_with url:search_path, method: :get do |f| %>
-    <%= f.label :query, "enter search query:" %>
-    <%= f.search_field :query %>
-    <%= f.submit "Search" %>
+    <%= f.label :q, "enter search query:" %>
+    <%= f.search_field :q %>
+    <%= f.submit "Search", name: nil %>
   <% end %>
 </div>
