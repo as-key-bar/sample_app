@@ -3,9 +3,10 @@
   get    "/help",    to: "static_pages#help"
   get    "/about",   to: "static_pages#about"
   get    "/contact", to: "static_pages#contact"
+  get    "/microposts", to: "static_pages#home"
+  get    "/search",  to: "searches#search"
   get    "/signup",  to: "users#new"
   get    "/login",   to: "sessions#new"
-  get    "/search",  to: "searches#search"
   post   "/login",   to: "sessions#create"
   delete "/logout",  to: "sessions#destroy"
   resources :users do
@@ -19,5 +20,4 @@
   resources :relationships,       only: [:create, :destroy] 
   resources :mutes,       only: [:create, :destroy] 
   resources :blocks,       only: [:create, :destroy] 
-  get '/microposts', to: 'static_pages#home'
 end
