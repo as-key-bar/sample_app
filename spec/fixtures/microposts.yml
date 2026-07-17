@@ -23,6 +23,38 @@ archer:
   created_at: <%= 5.minutes.ago %>
   user: archer
 
+search_1:
+  content: "まさかあんなことが起こるとは思わなかった"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+  
+
+search_2:
+  content: "まさかり担いだ金太郎"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_3:
+  content: "その「マサカ」が起こった"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_4:
+  content: "まっさかさまに落ちていった"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_5:
+  content: "masaka!"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_6:
+  content: "完全に無関係な文字列"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+
 <% 30.times do |n| %>
 micropost_<%= n %>:
   content: <%= Faker::Lorem.sentence(word_count: 5) %>
