@@ -1,4 +1,6 @@
 class MicropostsController < ApplicationController
+  include TextNormalizer
+
   before_action :logged_in_user, only: [:create, :destroy]
   before_action :correct_user,   only: :destroy
 
@@ -33,5 +35,9 @@ class MicropostsController < ApplicationController
     def correct_user
       @micropost = current_user.microposts.find_by(id: params[:id])
       redirect_to root_url, status: :see_other if @micropost.nil?
+    end
+
+    def normalize_yomigana(content)
+      yomigana = convert_to_hiragana(content)
     end
 end

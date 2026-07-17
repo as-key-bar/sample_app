@@ -1,7 +1,7 @@
 # app/models/concerns/string_normalizer.rb
 require 'nkf'
 
-module StringNormalizer
+module TextNormalizer
   extend ActiveSupport::Concern
   module_helper = Module.new do
     def convert_to_hiragana(text)
