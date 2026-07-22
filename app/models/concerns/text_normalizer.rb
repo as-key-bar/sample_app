@@ -37,8 +37,7 @@ module TextNormalizer
         end
       end
 
-      NKF.nkf('-w -W -h1', katakana_reading)
-      text.gsub(/[0-9０-９]/, NUMBER_MAP)
+      NKF.nkf('-w -W -h1', katakana_reading).gsub(/[0-9０-９]/, NUMBER_MAP)
     end
 
   end
