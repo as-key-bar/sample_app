@@ -7,6 +7,8 @@ class MicropostsController < ApplicationController
   def create
     @micropost = current_user.microposts.build(micropost_params)
     @micropost.image.attach(params[:micropost][:image])
+    @micropost.searchkey = convert_to_searchkey(params[:micropost][:content])
+
     if @micropost.save
       flash[:success] = "Micropost created!"
       redirect_to root_url
@@ -35,9 +37,5 @@ class MicropostsController < ApplicationController
     def correct_user
       @micropost = current_user.microposts.find_by(id: params[:id])
       redirect_to root_url, status: :see_other if @micropost.nil?
-    end
-
-    def normalize_yomigana(content)
-      yomigana = convert_to_hiragana(content)
     end
 end

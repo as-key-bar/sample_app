@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  include TextNormalizer
   def search
     @query = params[:q]
     if @query.present?
@@ -11,7 +12,7 @@ class SearchController < ApplicationController
 
   def search_results
     @title = "Search Results of #{@query}"
-    @microposts = Micropost.where("content LIKE ?", "%#{@query}%").paginate(page: params[:page], per_page: 10)
+    @microposts = Micropost.where("searchkey LIKE ?", "%#{convert_to_searchkey(@query)}%").paginate(page: params[:page], per_page: 10)
 
     render 'search_result'
   end
