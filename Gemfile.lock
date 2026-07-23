@@ -151,6 +151,7 @@ GEM
     guard-minitest (2.4.6)
       guard-compat (~> 1.2)
       minitest (>= 3.0)
+    humanize (3.1.0)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -429,6 +430,7 @@ DEPENDENCIES
   faker (= 2.21.0)
   guard (= 2.18.0)
   guard-minitest (= 2.4.6)
+  humanize
   image_processing (= 1.12.2)
   importmap-rails (= 1.1.5)
   irb (= 1.10.0)

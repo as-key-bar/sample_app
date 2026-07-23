@@ -1,32 +1,31 @@
 # app/models/concerns/string_normalizer.rb
 require 'nkf'
 require 'natto'
+require 'humanize'
+
 
 module TextNormalizer
   extend ActiveSupport::Concern
 
   MECAB = Natto::MeCab.new
-
-  NUMBER_MAP = {
-    '0' => 'ぜろ', '1' => 'いち', '2' => 'に', '3' => 'さん', '4' => 'よん',
-    '5' => 'ご',   '6' => 'ろく', '7' => 'なな', '8' => 'はち', '9' => 'きゅう',
-    '０' => 'ぜろ', '１' => 'いち', '２' => 'に', '３' => 'さん', '４' => 'よん',
-    '５' => 'ご',   '６' => 'ろく', '７' => 'なな', '８' => 'はち', '９' => 'きゅう'
-  }.freeze
-
-
+  NUMBER_REGEX = /[0-9０-９]+/
 
   module_helper = Module.new do
-    def convert_to_hiragana(text)
-      return "" if text.blank?
-      NKF.nkf('-w -W -h1', text)
-    end
+      def convert_number_to_kanji(text)
+        return "" if text.blank?
+
+        text.gsub(NUMBER_REGEX) do |matched_number|
+          half_width_str = NKF.nkf('-w -W -m0Z1', matched_number)
+          int_value = half_width_str.to_i
+          int_value.humanize(locale: :jp)
+        end
+      end
 
     def convert_to_searchkey(text)
       return "" if text.blank?
 
       katakana_reading = ""
-      MECAB.parse(text.to_s) do |node|
+      MECAB.parse(convert_number_to_kanji(text)) do |node|
         features = node.feature.split(',')
         reading = features[7]
 
@@ -37,7 +36,7 @@ module TextNormalizer
         end
       end
 
-      NKF.nkf('-w -W -h1', katakana_reading).gsub(/[0-9０-９]/, NUMBER_MAP)
+      NKF.nkf('-w -W -h1', katakana_reading)
     end
 
   end

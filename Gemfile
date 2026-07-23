@@ -25,6 +25,7 @@ gem "sqlite3",         "1.6.1"
 gem "concurrent-ruby", "1.3.4"
 gem "aws-sdk-s3", "1.114.0", require: false
 gem "natto"
+gem "humanize"
 
 group :development, :test do
   gem 'reline', '0.5.10'
