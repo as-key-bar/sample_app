@@ -114,9 +114,57 @@ RSpec.describe "Searches", type: :request do
         get search_path, params: { q: "十二件" }
         expect(response.body).to include("テストに12件もテストを行います。十二件も、１２件もですよ")
       end
-
-
     end
 
+    context "AND検索のテスト" do
+      it "半角スペースの接続" do
+        log_in_as(users(:michael))
+        expect {
+          post microposts_path, params: { micropost: { content: "まさか、あんなことが起こるなんて" } }
+          post microposts_path, params: { micropost: { content: "まさかり担いだ金太郎" } }
+        }.to change(Micropost, :count)
+        
+        get search_path, params: { q: "まさか なんて" }
+        expect(response.body).to include("まさか、あんなことが起こるなんて")
+        expect(response.body).not_to include("まさかり担いだ金太郎")
+      end
+
+
+      it "全角スペースの接続" do
+        log_in_as(users(:michael))
+        expect {
+          post microposts_path, params: { micropost: { content: "まさか、あんなことが起こるなんて" } }
+          post microposts_path, params: { micropost: { content: "まさかり担いだ金太郎" } }
+        }.to change(Micropost, :count)
+        
+        get search_path, params: { q: "まさか　なんて" }
+        expect(response.body).to include("まさか、あんなことが起こるなんて")
+        expect(response.body).not_to include("まさかり担いだ金太郎")
+      end
+
+      it "複数スペースの接続" do
+        log_in_as(users(:michael))
+        expect {
+          post microposts_path, params: { micropost: { content: "まさか、あんなことが起こるなんて" } }
+          post microposts_path, params: { micropost: { content: "まさかり担いだ金太郎" } }
+        }.to change(Micropost, :count)
+        
+        get search_path, params: { q: "まさか 　なんて" }
+        expect(response.body).to include("まさか、あんなことが起こるなんて")
+        expect(response.body).not_to include("まさかり担いだ金太郎")
+      end
+
+      it "複数クエリの接続" do
+        log_in_as(users(:michael))
+        expect {
+          post microposts_path, params: { micropost: { content: "まさか、あんなことが起こるなんて" } }
+          post microposts_path, params: { micropost: { content: "まさかり担いだ金太郎" } }
+        }.to change(Micropost, :count)
+        
+        get search_path, params: { q: "まさ か なん て" }
+        expect(response.body).to include("まさか、あんなことが起こるなんて")
+        expect(response.body).not_to include("まさかり担いだ金太郎")
+      end
+    end
   end
 end
