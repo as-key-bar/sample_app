@@ -13,7 +13,14 @@ class SearchController < ApplicationController
   def search_results
     return if !@query 
     @title = "Search Results of #{@query}"
-    @microposts = Micropost.where("searchkey LIKE ?", "%#{convert_to_searchkey(@query)}%").paginate(page: params[:page], per_page: 10)
+
+    queries = @query.strip.split(/[[:blank:]]+/)
+
+    scope = Micropost.all
+    @microposts = queries.reduce(scope) do |result, q|
+      searchkey = convert_to_searchkey(q)
+      result.where("searchkey LIKE ? OR searchkey LIKE ?", "%#{searchkey}%", "%#{q}%")
+    end.paginate(page: params[:page], per_page: 10)
 
     render 'search_result'
   end
