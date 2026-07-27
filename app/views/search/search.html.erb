@@ -8,5 +8,12 @@
     <%= f.label :q, "enter search query:" %>
     <%= f.search_field :q %>
     <%= f.submit "Search", name: nil %>
+    <div>
+        <%= f.label :active_only do %>
+          公開中のみ検索
+          <%= f.check_box :active_only, { checked: params[:active_only] == "1" }, "1", nil %>
+        <% end %>
+    </div>
+
   <% end %>
 </div>
