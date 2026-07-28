@@ -28,6 +28,11 @@ class MicropostsController < ApplicationController
     end
   end
 
+  def show  
+    @micropost = Micropost.find(params[:id])  
+    @replies = @micropost.reply_from.paginate(page: params[:page])
+  end
+
   private
 
     def micropost_params
