@@ -16,7 +16,7 @@ class SearchController < ApplicationController
     queries = @query.strip.split(/[[:blank:]]+/)
     follow_only = params[:follow_only] == "1" 
 
-    if current_user && @follow_only
+    if current_user && follow_only
       target_user_ids = current_user.following.map(&:id)
       target_user_ids << current_user.id
     end
@@ -24,7 +24,7 @@ class SearchController < ApplicationController
     scope = Micropost.all
     @microposts = queries.reduce(scope) do |result, q|
       searchkey = convert_to_searchkey(q)
-      if current_user && @follow_only
+      if current_user && follow_only
         result.where(user_id: target_user_ids)
               .where("searchkey LIKE ? OR searchkey LIKE ?", "%#{searchkey}%", "%#{q}%")
       else
