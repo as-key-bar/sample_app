@@ -1,5 +1,15 @@
 class Micropost < ApplicationRecord
   belongs_to :user
+
+  has_many :passive_replys, class_name:  "MicropostReply",
+                                  foreign_key: "reply",
+                                  dependent:   :destroy
+  belongs_to :active_replys, class_name:  "MicropostReply",
+                                   foreign_key: "reply_to",
+                                   dependent:   :destroy
+  belongs_to :reply_to, through: :active_replys,  source: :reply_to
+  has_many :replyed_from, through: :passive_replys, source: :reply
+
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
   end
