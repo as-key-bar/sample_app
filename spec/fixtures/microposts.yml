@@ -1,63 +1,105 @@
 orange:
   content: "I just ate an orange!"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('I just ate an orange!') %>"
   created_at: <%= 10.minutes.ago %>
   user: michael
 
 tau_manifesto:
   content: "Check out the @tauday site by @mhartl: https://tauday.com"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('Check out the @tauday site by @mhartl: https://tauday.com') %>"
   created_at: <%= 3.years.ago %>
   user: michael
 
 cat_video:
   content: "Sad cats are sad: https://youtu.be/PKffm2uI4dk"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('Sad cats are sad: https://youtu.be/PKffm2uI4dk') %>"
   created_at: <%= 2.hours.ago %>
   user: michael
 
 most_recent:
   content: "Writing a short test"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('Writing a short test') %>"
   created_at: <%= Time.zone.now %>
   user: michael
 
 archer:
   content: "This micropost belongs to Archer"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('This micropost belongs to Archer') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 search_1:
   content: "まさかあんなことが起こるとは思わなかった"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('まさかあんなことが起こるとは思わなかった') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
-  
 
 search_2:
   content: "まさかり担いだ金太郎"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('まさかり担いだ金太郎') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 search_3:
   content: "その「マサカ」が起こった"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('その「マサカ」が起こった') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 search_4:
   content: "まっさかさまに落ちていった"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('まっさかさまに落ちていった') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 search_5:
   content: "masaka!"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('masaka!') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 search_6:
   content: "完全に無関係な文字列"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('完全に無関係な文字列') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_6:
+  content: "今回はテストです"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('今回はテストです') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_7:
+  content: "今回はﾃｽﾄです"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('今回はﾃｽﾄです') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_8:
+  content: "今から提示する文章はテストなんです"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('今から提示する文章はテストなんです') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_9:
+  content: "テストに12件もテストを行います。十二件も、１２件もですよ"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('テストに12件もテストを行います。十二件も、１２件もですよ') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+search_10:
+  content: "まさか、あんなことが起こるなんて"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('まさか、あんなことが起こるなんて') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
 
 
 <% 30.times do |n| %>
+<% text = Faker::Lorem.sentence(word_count: 5) %>
 micropost_<%= n %>:
-  content: <%= Faker::Lorem.sentence(word_count: 5) %>
+  content: <%= text %>
+  searchkey: "<%= TextNormalizer.convert_to_searchkey(text) %>"
   created_at: <%= 42.days.ago %>
   user: michael
 <% end %>

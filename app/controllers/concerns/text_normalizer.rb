@@ -38,4 +38,7 @@ module TextNormalizer
 
     NKF.nkf('-w -W -h1', katakana_reading)
   end
+
+  module_function :convert_number_to_kanji
+  module_function :convert_to_searchkey
 end
