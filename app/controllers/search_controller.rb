@@ -6,7 +6,6 @@ class SearchController < ApplicationController
       search_results
     else
       @title = "Search"
-      @follow_only = params[:follow_only]
       render 'search'
     end
   end
@@ -15,17 +14,17 @@ class SearchController < ApplicationController
     return if !@query 
     @title = "Search Results of #{@query}"
     queries = @query.strip.split(/[[:blank:]]+/)
-    @follow_only = params[:follow_only]
+    follow_only = params[:follow_only] == "1" 
 
-    if current_user
+    if current_user && @follow_only
       target_user_ids = current_user.following.map(&:id)
       target_user_ids << current_user.id
     end
     
-    scope = Micropost.all
+    scope = Micropost.alla
     @microposts = queries.reduce(scope) do |result, q|
       searchkey = convert_to_searchkey(q)
-      if current_user && @follow_only == "1"
+      if current_user && @follow_only
         result.where(user_id: target_user_ids)
               .where("searchkey LIKE ? OR searchkey LIKE ?", "%#{searchkey}%", "%#{q}%")
       else
