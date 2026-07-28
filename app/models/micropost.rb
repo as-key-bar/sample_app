@@ -1,14 +1,16 @@
 class Micropost < ApplicationRecord
   belongs_to :user
 
+
   has_many :passive_replys, class_name:  "MicropostReply",
-                                  foreign_key: "reply",
+                                  foreign_key: "reply_id",
                                   dependent:   :destroy
-  belongs_to :active_replys, class_name:  "MicropostReply",
-                                   foreign_key: "reply_to",
+  has_many :reply, through: :passive_replys, source: :reply_to
+
+  has_one :active_replys, class_name:  "MicropostReply",
+                                   foreign_key: "reply_to_id",
                                    dependent:   :destroy
-  belongs_to :reply_to, through: :active_replys,  source: :reply_to
-  has_many :replyed_from, through: :passive_replys, source: :reply
+  has_one :reply_to, through: :active_replys,  source: :reply
 
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
@@ -22,7 +24,9 @@ class Micropost < ApplicationRecord
                               message:   "should be less than 5MB" }
 
   def set_reply_to(micropost)
-    reply_to << micropost
+    return false if micropost.nil?
+    self.reply_to = micropost
+    self.save
   end
 
 end
