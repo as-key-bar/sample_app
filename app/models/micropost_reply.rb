@@ -1,0 +1,2 @@
+class MicropostReply < ApplicationRecord
+end
