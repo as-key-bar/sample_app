@@ -14,7 +14,7 @@
       get :following, :followers, :muting, :blocking
     end
   end
-  resources :microposts, only: [:create, :destroy] do
+  resources :microposts, only: [:create, :destroy, :show] do
     member do
       get :reply_to, :reply
     end
