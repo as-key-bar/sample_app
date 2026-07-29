@@ -1,16 +1,6 @@
 <% provide(:title, @micropost.content) %>
 <div class="row">
   <div>
-    @micropost.content
-  </div>
-
-  <div>
-    <% if @micropost.reply_from.any? %>
-      <h3>Replies (<%= @micropost.reply_from.count %>)</h3>
-      <ol class="microposts">
-        <%= render @replies %>
-      </ol>
-      <%= will_paginate @replies %>
-    <% end %>
+    <%= @micropost.content %>
   </div>
 </div>
