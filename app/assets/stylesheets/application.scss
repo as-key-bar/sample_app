@@ -310,6 +310,22 @@ input {
     margin-right: 10px;
     margin-top: 5px;
   }
+
+  /* 全体リンク */
+  .card-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* ベースのクリック層 */
+  }
+
+  /* アイコンや名前、削除ボタンなど内側のリンクを前面に出す */
+  .inner-link {
+    position: relative;
+    z-index: 2; /* カード全体リンクの上に重ねる */
+  }
 }
 
 aside {
