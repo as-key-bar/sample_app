@@ -28,4 +28,32 @@ RSpec.describe MicropostsController, type: :request do
     }.not_to change(Micropost, :count)
     expect(response).to redirect_to(root_url)
   end
+
+  context "micropost詳細画面のテスト" do
+    it "micropost詳細を表示することができるかどうか" do
+    
+    end
+
+    it "micropost詳細でリプライを全て表示することができるかどうか" do
+    
+    end
+
+    it "micropost詳細でリプライ先ポストを表示することができるかどうか" do
+    
+    end
+
+    it "micropost詳細でブロックしているユーザーに自身のポストが表示されないかどうか" do
+    
+    end
+
+  end
+  
+  context "micropostリプライのテスト" do
+    it "micropostのリプライを作成することができるかどうか" do
+    
+    end
+  end
+
+
+
 end

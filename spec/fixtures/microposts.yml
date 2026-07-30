@@ -94,6 +94,36 @@ search_10:
   created_at: <%= 5.minutes.ago %>
   user: archer
 
+reply_parent:
+  content: "リプライの親"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの親') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+reply_main:
+  content: "リプライテストのメインポスト"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライテストのメインポスト') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+reply_child1:
+  content: "リプライの子１"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子１') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+reply_child1:
+  content: "リプライの子２"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子２') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
+reply_child1:
+  content: "リプライの子３"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子３') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+
 
 <% 30.times do |n| %>
 <% text = Faker::Lorem.sentence(word_count: 5) %>
