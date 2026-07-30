@@ -30,8 +30,12 @@ class MicropostsController < ApplicationController
 
   def show  
     @micropost = Micropost.find(params[:id])  
-    @replies = @micropost.replies.paginate(page: params[:page])
-    @reply_micropost = current_user.microposts.build if logged_in?
+    if current_user.blocked?(@micropost.user)
+      redirect_to root_url
+    else
+      @replies = @micropost.replies.paginate(page: params[:page])
+      @reply_micropost = current_user.microposts.build if logged_in?
+    end
   end
 
   private
