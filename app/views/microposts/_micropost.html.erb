@@ -1,23 +1,24 @@
 <li id="micropost-<%= micropost.id %>" class="micropost-card">
-  <%# cssが動かないので一時的に無効化 <%= link_to "", micropost_path(micropost), class: "card-link" =%> %>
-  <%= link_to "linktext", micropost_path(micropost) %>
+  <div>
+    <%= link_to "", micropost_path(micropost), class: "card-link" =%>
 
-  <%= link_to gravatar_for(micropost.user, size: 50), micropost.user, class: "inner-link" %>
-  <span class="user"><%= link_to micropost.user.name, micropost.user, class: "inner-link" %></span>
+    <%= link_to gravatar_for(micropost.user, size: 50), micropost.user, class: "inner-link" %>
+    <span class="user"><%= link_to micropost.user.name, micropost.user, class: "inner-link" %></span>
 
-  <span class="content">
-    <%= micropost.content %>
-    <% if micropost.image.attached? %>
-      <%= image_tag micropost.image.variant(:display) %>
-    <% end %>
-  </span>
+    <span class="content">
+      <%= micropost.content %>
+      <% if micropost.image.attached? %>
+        <%= image_tag micropost.image.variant(:display) %>
+      <% end %>
+    </span>
 
-  <span class="timestamp">
-    Posted <%= time_ago_in_words(micropost.created_at) %> ago.
-    <% if current_user?(micropost.user) %>
-      <%= link_to "delete", micropost, data: { "turbo-method": :delete,
-                                               turbo_confirm: "You sure?" },
-                                         class: "inner-link" %>
-    <% end %>
-  </span>
+    <span class="timestamp">
+      Posted <%= time_ago_in_words(micropost.created_at) %> ago.
+      <% if current_user?(micropost.user) %>
+        <%= link_to "delete", micropost, data: { "turbo-method": :delete,
+                                                turbo_confirm: "You sure?" },
+                                          class: "inner-link" %>
+      <% end %>
+    </span>
+  </div>
 </li>

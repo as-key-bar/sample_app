@@ -1,26 +1,35 @@
 <% provide(:title, @micropost.content) %>
+
 <div class="row">
-  <div class="col-md-8">
-    <%= render @micropost %>
-  </div>
-
-  <div class="col-md-8">
-    <% if !@micropost.reply_to.nil? %>
-      <%= render @micropost.reply_to %>
+  <div class="col-md-8 offset-md-2 micropost-thread-container">
+    
+    <% if @micropost.reply_to.present? %>
+      <div class="thread-section parent-post">
+        <span class="thread-label">Replying to</span>
+        <%= render @micropost.reply_to %>
+        <div class="thread-line"></div> <!-- スレッドをつなぐ縦線 -->
+      </div>
     <% end %>
-  </div>
 
-  <div class="col-md-8">
-    <% if @micropost.replies.any? %>
-      <ol class="microposts">
-        <%= render @replies %>
-      </ol>
-      <%= will_paginate @replies %>
+    <div class="thread-section main-post">
+      <%= render @micropost %>
+    </div>
+
+    <% if logged_in? %>
+      <section class="micropost_form reply-form-section">
+        <%= render 'shared/micropost_form', object: @reply_micropost, reply_to_id: @micropost.id %>
+      </section>
     <% end %>
+
+    <% if @replies.any? %>
+      <div class="thread-section replies-section">
+        <h3 class="replies-heading">Replies (<%= @micropost.replies.count %>)</h3>
+        <ol class="microposts replies-list">
+          <%= render @replies %>
+        </ol>
+        <%= will_paginate @replies %>
+      </div>
+    <% end %>
+
   </div>
-
-
-  <section class="micropost_form">
-    <%= render 'shared/micropost_form', object: @reply_micropost, reply_to_id: @micropost.id %>
-  </section>
 </div>

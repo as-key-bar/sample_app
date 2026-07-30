@@ -284,7 +284,8 @@ input {
 .microposts {
   list-style: none;
   padding: 0;
-  li {
+li {
+    position: relative;
     padding: 10px 0;
     border-top: 1px solid #e8e8e8;
   }
@@ -311,20 +312,18 @@ input {
     margin-top: 5px;
   }
 
-  /* 全体リンク */
   .card-link {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* ベースのクリック層 */
+    z-index: 1;
   }
 
-  /* アイコンや名前、削除ボタンなど内側のリンクを前面に出す */
   .inner-link {
     position: relative;
-    z-index: 2; /* カード全体リンクの上に重ねる */
+    z-index: 2;
   }
 }
 
@@ -339,5 +338,85 @@ span.image {
   margin-top: 10px;
   input {
     border: 0;
+  }
+}
+
+
+/*micropost-thread-view*/
+.micropost-thread-container {
+  margin-top: 20px;
+
+  .thread-section {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .parent-post {
+    margin-bottom: 0;
+    opacity: 0.85;
+
+    .thread-label {
+      font-size: 0.85rem;
+      color: #657786;
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .thread-line {
+      position: absolute;
+      left: 35px;
+      bottom: -20px;
+      width: 2px;
+      height: 25px;
+      background-color: #e1e8ed;
+      z-index: 1;
+    }
+  }
+
+  .main-post {
+    padding: 15px;
+    background-color: #ffffff;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    .content {
+      font-size: 1.25rem;
+      line-height: 1.5;
+      margin: 10px 0;
+      display: block;
+    }
+  }
+
+  .reply-form-section {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+  }
+
+  .replies-section {
+    border-top: 2px solid #e1e8ed;
+    padding-top: 20px;
+
+    .replies-heading {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .replies-list {
+      list-style: none;
+      padding-left: 10px;
+      border-left: 2px solid #f1f3f5;
+
+      li {
+        padding: 10px 0 10px 15px;
+        border-bottom: 1px solid #f1f3f5;
+      }
+    }
   }
 }
