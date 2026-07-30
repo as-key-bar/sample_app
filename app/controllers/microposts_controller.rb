@@ -31,12 +31,13 @@ class MicropostsController < ApplicationController
   def show  
     @micropost = Micropost.find(params[:id])  
     @replies = @micropost.replies.paginate(page: params[:page])
+    @reply_micropost = current_user.microposts.build if logged_in?
   end
 
   private
 
     def micropost_params
-      params.require(:micropost).permit(:content, :image)
+      params.require(:micropost).permit(:content, :image, :reply_to_id)
     end
 
     def correct_user

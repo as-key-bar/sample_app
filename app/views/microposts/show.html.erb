@@ -1,10 +1,10 @@
 <% provide(:title, @micropost.content) %>
 <div class="row">
-  <div>
+  <div class="col-md-8">
     <%= render @micropost %>
   </div>
 
-  <div>
+  <div class="col-md-8">
     <% if !@micropost.reply_to.nil? %>
       <%= render @micropost.reply_to %>
     <% end %>
@@ -21,6 +21,6 @@
 
 
   <section class="micropost_form">
-    <%= render 'shared/micropost_form' %>
+    <%= render 'shared/micropost_form', object: @reply_micropost, reply_to_id: @micropost.id %>
   </section>
 </div>
