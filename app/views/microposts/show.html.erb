@@ -1,8 +1,24 @@
 <% provide(:title, @micropost.content) %>
 <div class="row">
   <div>
-    <%= @micropost.content %>
+    <%= render @micropost %>
   </div>
+
+  <div>
+    <% if !@micropost.reply_to.nil? %>
+      <%= render @micropost.reply_to %>
+    <% end %>
+  </div>
+
+  <div class="col-md-8">
+    <% if @micropost.replies.any? %>
+      <ol class="microposts">
+        <%= render @replies %>
+      </ol>
+      <%= will_paginate @replies %>
+    <% end %>
+  </div>
+
 
   <section class="micropost_form">
     <%= render 'shared/micropost_form' %>

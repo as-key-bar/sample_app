@@ -30,7 +30,7 @@ class MicropostsController < ApplicationController
 
   def show  
     @micropost = Micropost.find(params[:id])  
-#    @replies = @micropost.reply_from.paginate(page: params[:page])
+    @replies = @micropost.replies.paginate(page: params[:page])
   end
 
   private

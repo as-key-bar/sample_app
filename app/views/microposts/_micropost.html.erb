@@ -1,5 +1,5 @@
 <li id="micropost-<%= micropost.id %>" class="micropost-card">
-  <%# cssが動かないので一時的に無効化 <%= link_to "", micropost_path(micropost), class: "card-link" %> %>
+  <%# cssが動かないので一時的に無効化 <%= link_to "", micropost_path(micropost), class: "card-link" =%> %>
   <%= link_to "linktext", micropost_path(micropost) %>
 
   <%= link_to gravatar_for(micropost.user, size: 50), micropost.user, class: "inner-link" %>
@@ -17,7 +17,7 @@
     <% if current_user?(micropost.user) %>
       <%= link_to "delete", micropost, data: { "turbo-method": :delete,
                                                turbo_confirm: "You sure?" },
-                                       class: "inner-link" %>
+                                         class: "inner-link" %>
     <% end %>
   </span>
 </li>
