@@ -352,6 +352,7 @@ span.image {
   }
 
   .parent-post {
+    display: flow-root;
     margin-bottom: 0;
     opacity: 0.85;
 
@@ -363,23 +364,11 @@ span.image {
       display: block;
     }
 
-    .thread-line {
-      position: absolute;
-      left: 35px;
-      bottom: -20px;
-      width: 2px;
-      height: 25px;
-      background-color: #e1e8ed;
-      z-index: 1;
-    }
   }
 
   .main-post {
     padding: 15px;
     background-color: #ffffff;
-    border: 2px solid #e1e8ed;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
     .content {
       font-size: 1.25rem;
@@ -391,10 +380,8 @@ span.image {
 
   .reply-form-section {
     padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
+    background-color: #ffffff;
     margin-bottom: 30px;
-    border: 1px solid #e9ecef;
   }
 
   .replies-section {
@@ -411,11 +398,11 @@ span.image {
     .replies-list {
       list-style: none;
       padding-left: 10px;
-      border-left: 2px solid #f1f3f5;
+      border-left: 2px solid #ffffff;
 
       li {
         padding: 10px 0 10px 15px;
-        border-bottom: 1px solid #f1f3f5;
+        border-bottom: 1px solid #ffffff;
       }
     }
   }
