@@ -11,7 +11,7 @@ class MicropostsController < ApplicationController
 
     if @micropost.save
       flash[:success] = "Micropost created!"
-      redirect_to root_url
+      redirect_back_or_to root_url
     else
       @feed_items = current_user.feed.paginate(page: params[:page])
       render 'static_pages/home', status: :unprocessable_entity
