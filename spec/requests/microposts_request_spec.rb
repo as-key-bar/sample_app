@@ -63,8 +63,17 @@ RSpec.describe MicropostsController, type: :request do
   end
   
   context "micropostリプライのテスト" do
+      let(:target_micropost) { microposts(:reply_main) }
+
     it "micropostのリプライを作成することができるかどうか" do
+      log_in_as(users(:michael))
+      expect {
+        post microposts_path, params: { micropost: { content: "Lorem ipsum", reply_to_id: target_micropost.id } }
+      }.to change(Micropost, :count)
       
+      get micropost_path(microposts(:reply_main))
+      expect(response.body).to include("Lorem ipsum")
+
     end
   end
 end
