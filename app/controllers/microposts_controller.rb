@@ -30,7 +30,7 @@ class MicropostsController < ApplicationController
 
   def show  
     @micropost = Micropost.find(params[:id])  
-    if current_user.blocked?(@micropost.user)
+    if !current_user.nil? && current_user.blocked?(@micropost.user)
       redirect_to root_url
     else
       @replies = @micropost.replies.paginate(page: params[:page])

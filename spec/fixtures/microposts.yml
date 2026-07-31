@@ -105,24 +105,28 @@ reply_main:
   searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライテストのメインポスト') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
+  reply_to: reply_parent
 
 reply_child1:
   content: "リプライの子１"
   searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子１') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
+  reply_to: reply_main
 
-reply_child1:
+reply_child2:
   content: "リプライの子２"
   searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子２') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
+  reply_to: reply_main
 
-reply_child1:
+reply_child3:
   content: "リプライの子３"
   searchkey: "<%= TextNormalizer.convert_to_searchkey('リプライの子３') %>"
   created_at: <%= 5.minutes.ago %>
   user: archer
+  reply_to: reply_main
 
 
 <% 30.times do |n| %>

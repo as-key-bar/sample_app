@@ -30,16 +30,25 @@ RSpec.describe MicropostsController, type: :request do
   end
 
   context "micropost詳細画面のテスト" do
-    it "micropost詳細を表示することができるかどうか" do
     
+    it "micropost詳細を表示することができるかどうか" do
+      log_in_as(users(:michael))
+      get micropost_path(microposts(:reply_main))
+      expect(response.body).to include("リプライテストのメインポスト")
     end
 
     it "micropost詳細でリプライを全て表示することができるかどうか" do
-    
+      log_in_as(users(:michael))
+      get micropost_path(microposts(:reply_main))
+      expect(response.body).to include("リプライの子１")    
+      expect(response.body).to include("リプライの子２")    
+      expect(response.body).to include("リプライの子３")    
     end
 
     it "micropost詳細でリプライ先ポストを表示することができるかどうか" do
-    
+      log_in_as(users(:michael))
+      get micropost_path(microposts(:reply_main))
+      expect(response.body).to include("リプライの親")
     end
 
     it "micropost詳細でブロックしているユーザーに自身のポストが表示されないかどうか" do
@@ -50,10 +59,7 @@ RSpec.describe MicropostsController, type: :request do
   
   context "micropostリプライのテスト" do
     it "micropostのリプライを作成することができるかどうか" do
-    
+      
     end
   end
-
-
-
 end
