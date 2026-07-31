@@ -30,8 +30,9 @@ class MicropostsController < ApplicationController
 
   def show  
     @micropost = Micropost.find(params[:id])  
-    if !current_user.nil? && current_user.blocked?(@micropost.user)
-      redirect_to root_url
+    if logged_in? && current_user.blocked?(@micropost.user)
+      flash[:danger] = "You are blocked by this user"
+      redirect_back(fallback_location: root_url)
     else
       @replies = @micropost.replies.paginate(page: params[:page])
       @reply_micropost = current_user.microposts.build if logged_in?

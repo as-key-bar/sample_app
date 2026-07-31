@@ -138,7 +138,7 @@ reply_blocker:
   content: "ブロックテストのブロック側"
   searchkey: "<%= TextNormalizer.convert_to_searchkey('ブロックテストのブロック側') %>"
   created_at: <%= 5.minutes.ago %>
-  user: blocker
+  user: blocking
   reply_to: reply_blocked
 
 

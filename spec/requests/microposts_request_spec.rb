@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe MicropostsController, type: :request do
 
-  fixtures :users, :microposts
+  fixtures :users, :microposts, :blocks
 
   let(:micropost) { microposts(:orange) }
 
@@ -53,8 +53,11 @@ RSpec.describe MicropostsController, type: :request do
 
     it "micropost詳細でブロックしているユーザーに自身のポストが表示されないかどうか" do
       log_in_as(users(:blocked))
-      get micropost_path(microposts(:reply_blocker))      
-      expect(response.body).not_to include("ブロックテストのブロック側")
+      get micropost_path(microposts(:reply_blocker)), headers: { "HTTP_REFERER" => root_path }
+      expect(response).to redirect_to(root_url)
+
+      follow_redirect!
+      expect(flash[:danger]).to eq "You are blocked by this user"
     end
 
   end
