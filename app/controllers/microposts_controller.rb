@@ -35,7 +35,7 @@ class MicropostsController < ApplicationController
       redirect_back(fallback_location: root_url)
     else
       @replies = @micropost.replies.paginate(page: params[:page])
-      @reply_micropost = current_user.microposts.build if logged_in?
+      @reply_micropost = current_user.microposts.build
     end
   end
 
