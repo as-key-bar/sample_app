@@ -52,7 +52,9 @@ RSpec.describe MicropostsController, type: :request do
     end
 
     it "micropost詳細でブロックしているユーザーに自身のポストが表示されないかどうか" do
-    
+      log_in_as(users(:blocked))
+      get micropost_path(microposts(:reply_blocker))      
+      expect(response.body).not_to include("ブロックテストのブロック側")
     end
 
   end

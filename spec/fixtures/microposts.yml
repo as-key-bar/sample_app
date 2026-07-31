@@ -128,6 +128,19 @@ reply_child3:
   user: archer
   reply_to: reply_main
 
+reply_blocked:
+  content: "ブロックテストの被ブロック側"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('ブロックテストの被ブロック側') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: blocked
+
+reply_blocker:
+  content: "ブロックテストのブロック側"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('ブロックテストのブロック側') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: blocker
+  reply_to: reply_blocked
+
 
 <% 30.times do |n| %>
 <% text = Faker::Lorem.sentence(word_count: 5) %>
