@@ -14,11 +14,7 @@
       get :following, :followers, :muting, :blocking
     end
   end
-  resources :microposts, only: [:create, :destroy, :show] do
-    member do
-      get :reply_to, :reply
-    end
-  end
+  resources :microposts, only: [:create, :destroy, :show]
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :relationships,       only: [:create, :destroy] 
