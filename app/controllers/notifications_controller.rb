@@ -5,7 +5,8 @@ class NotificationsController < ApplicationController
       @notifications = current_user.notifications
                                     .includes(:notifiable)
                                     .order(created_at: :desc)
-                                    .reject { |notification| blocking_ids.include?(notification.sender&.id) }
+      current_user.notifications.set_read
+      @notifications = @notifications.reject { |notification| blocking_ids.include?(notification.sender&.id) }
     else 
       redirect_to root_url
     end

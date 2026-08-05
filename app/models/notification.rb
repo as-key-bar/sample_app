@@ -10,4 +10,8 @@ class Notification < ApplicationRecord
       notifiable.user
     end
   end
+
+  def self.set_read
+    update_all(read: true)
+  end
 end
