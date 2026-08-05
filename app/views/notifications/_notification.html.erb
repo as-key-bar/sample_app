@@ -4,6 +4,12 @@
     <%= link_to gravatar_for(follower, size: 50), follower %>
     <span class="user"><%= link_to follower.name, follower %></span>
     <span class="action">followed you</span>
+  <% elsif notification.notifiable_type == "Micropost" %>
+    <% micropost = notification.notifiable %>
+    <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
+    <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
+    <span class="action">commented on your post</span>
+    <span class="content"><%= micropost.content %></span>
   <% end %>
 
   <span class="timestamp">

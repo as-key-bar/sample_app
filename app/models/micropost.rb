@@ -1,4 +1,5 @@
 class Micropost < ApplicationRecord
+  include Notifiable
   belongs_to :user
 
   belongs_to :reply_to, class_name: "Micropost", optional: true
@@ -14,4 +15,12 @@ class Micropost < ApplicationRecord
                                       message: "must be a valid image format" },
                       size: { less_than: 5.megabytes,
                               message:   "should be less than 5MB" }
+
+
+  def notification_recipient
+    reply_to.user
+  end
+  def denied?
+    reply_to.present? && reply_to.user.blocking.exists?(user.id) 
+  end
 end
