@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :muting, through: :active_mutes,  source: :muted
   has_many :blocking, through: :active_blocks, source: :blocked
   has_many :blocked, through: :passive_blocks, source: :blocking
-
+  has_many :notifications, dependent: :destroy
 
   before_save   :downcase_email
   before_create :create_activation_digest
