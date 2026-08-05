@@ -5,9 +5,17 @@ class NotificationsController < ApplicationController
       @notifications = current_user.notifications
                                     .includes(:notifiable)
                                     .order(created_at: :desc)
-      @notifications.set_read
-      @notifications = @notifications.reject { |notification| blocking_ids.include?(notification.sender&.id) }
-    else 
+                                    .reject { |notification| blocking_ids.include?(notification.sender&.id) }
+    else
+      redirect_to root_url
+    end
+  end
+
+  def read
+    if !current_user.nil?
+      current_user.notifications.set_read
+      head :no_content
+    else
       redirect_to root_url
     end
   end
