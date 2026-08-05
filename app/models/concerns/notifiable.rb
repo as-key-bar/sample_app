@@ -9,7 +9,7 @@ module Notifiable
   private
 
   def create_notifications
-    notification = Notification.create(notifiable: self, user: current_user)
+    notification = Notification.create(notifiable: self, user: notification_recipient)
     notification.save!
   end
 end
