@@ -21,6 +21,6 @@ class Micropost < ApplicationRecord
     reply_to.user
   end
   def denied?
-    reply_to.present? && reply_to.user.blocking.exists?(user.id) 
+    reply_to.present?
   end
 end
