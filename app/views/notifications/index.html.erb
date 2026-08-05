@@ -1,2 +1,10 @@
-<h1>Notifications#index</h1>
-<p>Find me in app/views/notifications/index.html.erb</p>
+<% provide(:title, "Notifications") %>
+<h1>Notifications</h1>
+
+<% if @notifications.any? %>
+  <ol class="microposts notifications">
+    <%= render @notifications %>
+  </ol>
+<% else %>
+  <p class="no-notifications">You have no notifications yet.</p>
+<% end %>
