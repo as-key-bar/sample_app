@@ -20,4 +20,5 @@
   resources :relationships,       only: [:create, :destroy] 
   resources :mutes,       only: [:create, :destroy] 
   resources :blocks,       only: [:create, :destroy] 
+  resources :notifications,       only: [:index] 
 end
