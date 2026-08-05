@@ -334,6 +334,24 @@ aside {
   }
 }
 
+/* notifications */
+
+.notifications {
+  .notification {
+    background-color: white;
+    transition: background-color 0.2s;
+
+    &.unread {
+      background-color: #eaf4ff;
+      border-left: 3px solid #337ab7;
+
+      .user {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 span.image {
   margin-top: 10px;
   input {
