@@ -5,6 +5,7 @@
   <ol class="microposts notifications">
     <%= render @notifications %>
   </ol>
+  <%= will_paginate %>
 <% else %>
   <p class="no-notifications">You have no notifications yet.</p>
 <% end %>
