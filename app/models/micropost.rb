@@ -18,9 +18,9 @@ class Micropost < ApplicationRecord
 
 
   def notification_recipient
-    reply_to.user
+    User.find_by(id: self.reply_to.user_id)
   end
   def denied?
-    reply_to.present?
+    reply_to.nil?
   end
 end
