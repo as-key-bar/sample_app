@@ -1,0 +1,44 @@
+follow_one:
+  notifiable: one (Relationship)
+  user: lana
+  read: false
+
+follow_two:
+  notifiable: two (Relationship)
+  user: malory
+  read: true
+
+follow_three:
+  notifiable: three (Relationship)
+  user: michael
+  read: false
+
+follow_four:
+  notifiable: four (Relationship)
+  user: michael
+  read: true
+
+reply_one:
+  notifiable: reply_main (Micropost)
+  user: archer
+  read: false
+
+reply_two:
+  notifiable: reply_child1 (Micropost)
+  user: archer
+  read: false
+
+reply_three:
+  notifiable: reply_child2 (Micropost)
+  user: archer
+  read: true
+
+reply_four:
+  notifiable: reply_child3 (Micropost)
+  user: archer
+  read: true
+
+reply_from_blocking:
+  notifiable: reply_blocker (Micropost)
+  user: blocked
+  read: false
