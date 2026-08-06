@@ -336,6 +336,19 @@ aside {
 
 /* notifications */
 
+.notification-nav-item {
+  position: relative;
+  display: inline-block;
+
+  .badge {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    background-color: $brand-danger;
+    color: white;
+  }
+}
+
 .notifications {
   .notification {
     background-color: white;

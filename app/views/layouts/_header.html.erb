@@ -12,7 +12,12 @@
       </div>
       <ul id="navbar-menu"
           class="nav navbar-nav navbar-right collapse navbar-collapse">
-        <li><%= link_to "Notifications", notifications_path %></li>
+        <li class="notification-nav-item">
+          <%= link_to "Notifications", notifications_path %>
+          <% if unread_notifications_count > 0 %>
+            <span class="badge"><%= unread_notifications_count %></span>
+          <% end %>
+        </li>
         <li><%= link_to "Search", search_path %></li>
         <li><%= link_to "Home", root_path %></li>
         <li><%= link_to "Help", help_path %></li>
