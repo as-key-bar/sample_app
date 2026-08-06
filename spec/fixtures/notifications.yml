@@ -42,3 +42,8 @@ reply_from_blocking:
   notifiable: reply_blocker (Micropost)
   user: blocked
   read: false
+
+reply_from_blocked:
+  notifiable: reply_blocked (Micropost)
+  user: blocking
+  read: false
