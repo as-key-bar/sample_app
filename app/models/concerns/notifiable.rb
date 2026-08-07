@@ -2,7 +2,7 @@ module Notifiable
   extend ActiveSupport::Concern
 
   included do
-    has_many :notifications, as: :notifiable, dependent: :destroy
+    has_one :notification, as: :notifiable, dependent: :destroy
     after_create_commit :create_notifications
   end
 
