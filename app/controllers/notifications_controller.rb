@@ -1,12 +1,11 @@
 class NotificationsController < ApplicationController
   def index
-    if !current_user.nil?
-      blocking_ids = current_user.blocking.pluck(:id)
+    if current_user.present?
       blocked_relationship_ids = Relationship.where(follower_id: current_user.blocking.select(:id)).select(:id)
       blocked_micropost_ids    = Micropost.where(user_id: current_user.blocking.select(:id)).select(:id)
 
       @notifications = current_user.notifications
-                                    .includes(:notifiable)
+                                    .includes(notifiable: [:follower, :user])
                                     .where.not(notifiable_type: "Relationship", notifiable_id: blocked_relationship_ids)
                                     .where.not(notifiable_type: "Micropost",    notifiable_id: blocked_micropost_ids)
                                     .order(created_at: :desc)
@@ -18,7 +17,7 @@ class NotificationsController < ApplicationController
   end
 
   def read
-    if !current_user.nil?
+    if current_user.present?
       current_user.notifications.set_read
       head :no_content
     else
