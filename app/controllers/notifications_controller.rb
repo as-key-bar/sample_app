@@ -18,7 +18,7 @@ class NotificationsController < ApplicationController
 
   def read
     if current_user.present?
-      current_user.notifications.set_read
+      current_user.notifications.update_all(read: true)
       head :no_content
     else
       redirect_to root_url
