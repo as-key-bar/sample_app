@@ -1,0 +1,4 @@
+<%= form_with(model: current_user.favorites.find_by(favorited_id: micropost.id),
+              html: { method: :delete }) do |f| %>
+  <%= f.submit "Unlike", class: "btn btn-primary" %>
+<% end %>

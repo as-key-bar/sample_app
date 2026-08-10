@@ -20,5 +20,16 @@
                                           class: "inner-link" %>
       <% end %>
     </span>
+    <span class="audience_action">
+      <% if logged_in? %>
+        <div id="favorite_form_<%= micropost.id %>">
+          <% if current_user.favoriting?(micropost) %>
+            <%= render "microposts/unfavorite", micropost: micropost %>
+          <% else %>
+            <%= render "microposts/favorite", micropost: micropost %>
+          <% end %>
+        </div>
+      <% end %>
+    </span>
   </div>
 </li>

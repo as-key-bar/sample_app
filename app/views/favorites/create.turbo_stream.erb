@@ -1,0 +1,3 @@
+<%= turbo_stream.update "favorite_form_#{@favorited_post.id}" do %>
+  <%= render "microposts/unfavorite", micropost: @favorited_post %>
+<% end %>
