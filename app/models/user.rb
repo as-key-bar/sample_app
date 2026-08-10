@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_many :blocking, through: :active_blocks, source: :blocked
   has_many :blocked, through: :passive_blocks, source: :blocking
   has_many :notifications, dependent: :destroy
+  has_many :favorites, foreign_key: "favoriter_id", dependent: :destroy
 
   before_save   :downcase_email
   before_create :create_activation_digest
@@ -181,6 +182,22 @@ class User < ApplicationRecord
   def blocked?(other_user)
     other_user.blocking.include?(self)
   end
+
+  def favorite(micropost)
+    if !favoriting?(micropost)
+      favorites.create(favorited_id: micropost.id)
+    end
+  end
+
+  def unfavorite(micropost)
+    if favoriting?(micropost)
+      favorites.find_by(favorited_id: micropost.id).destroy
+    end
+  end
+
+  def favoriting?(micropost)
+    favorites.exists?(favorited_id: micropost.id)
+  end  
 
   private
 

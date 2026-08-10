@@ -8,6 +8,8 @@ class Micropost < ApplicationRecord
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
   end
+  has_many :favorites, foreign_key: "favorited_id", dependent: :destroy
+
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
