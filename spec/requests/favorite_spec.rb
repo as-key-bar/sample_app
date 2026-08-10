@@ -9,16 +9,20 @@ RSpec.describe "Favorites", type: :request do
     log_in_as(user)
   end
   describe "POST /create" do
-    it "returns http success" do
-      post "/favorites", params: { favorited_id: microposts(:orange).id }
-      expect(response).to have_http_status(:success)
+    it "creates a favorite and redirects back" do
+      expect {
+        post "/favorites", params: { favorited_id: microposts(:orange).id }
+      }.to change(Favorite, :count).by(1)
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe "DELETE /destroy" do
-    it "returns http success" do
-      delete "/favorites/#{favorites(:one).id}"
-      expect(response).to have_http_status(:success)
+    it "destroys the favorite and redirects back" do
+      expect {
+        delete "/favorites/#{favorites(:three).id}"
+      }.to change(Favorite, :count).by(-1)
+      expect(response).to redirect_to(root_path)
     end
   end
 

@@ -1,4 +1,4 @@
-class FavoriteController < ApplicationController
+class FavoritesController < ApplicationController
   def create
     @favorited_post = Micropost.find(params[:favorited_id])
     if current_user.present?
