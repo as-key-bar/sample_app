@@ -25,6 +25,7 @@ class User < ApplicationRecord
   has_many :blocked, through: :passive_blocks, source: :blocking
   has_many :notifications, dependent: :destroy
   has_many :favorites, foreign_key: "favoriter_id", dependent: :destroy
+  has_many :favorite_microposts, through: :favorites, source: :favorited
 
   before_save   :downcase_email
   before_create :create_activation_digest
