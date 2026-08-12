@@ -1,0 +1,11 @@
+<% provide(:title, "#{@user.name}'s Favorites") %>
+<h1><%= @user.name %>'s Favorites</h1>
+
+<% if @microposts.any? %>
+  <ol class="microposts">
+    <%= render @microposts %>
+  </ol>
+  <%= will_paginate @microposts %>
+<% else %>
+  <p>No favorites yet.</p>
+<% end %>
