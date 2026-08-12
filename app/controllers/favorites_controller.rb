@@ -1,4 +1,11 @@
 class FavoritesController < ApplicationController
+  before_action :logged_in_user, only: [:index]
+
+  def index
+    @user = User.find(params[:user_id])
+    @microposts = @user.favorite_microposts.paginate(page: params[:page])
+  end
+
   def create
     @favorited_post = Micropost.find(params[:favorited_id])
     if current_user.present?
