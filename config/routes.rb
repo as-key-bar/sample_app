@@ -13,14 +13,15 @@
     member do
       get :following, :followers, :muting, :blocking
     end
+    resources :favorites, only: [:index]
   end
+  resources :favorites,       only: [:create, :destroy]
   resources :microposts, only: [:create, :destroy, :show]
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :relationships,       only: [:create, :destroy] 
   resources :mutes,       only: [:create, :destroy] 
   resources :blocks,       only: [:create, :destroy] 
-  resources :favorites,       only: [:create, :destroy] 
   resources :notifications,       only: [:index] do
     collection do
       patch :read
