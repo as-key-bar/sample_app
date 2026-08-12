@@ -32,8 +32,15 @@ RSpec.describe "Favorites", type: :request do
     describe "POST /create" do
       it "いいねが作成され、root_pathにリダイレクト" do
         expect {
+          post "/favorites", params: { favorited_id: microposts(:reply_parent).id }
+        }.to change(Favorite, :count).by(1).and change(Notification, :count).by(1)
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "自身のポストへのいいねが作成された場合は通知が発生しない" do
+        expect {
           post "/favorites", params: { favorited_id: microposts(:orange).id }
-        }.to change(Favorite, :count).by(1)
+        }.to change(Favorite, :count).by(1).and change(Notification, :count).by(0)
         expect(response).to redirect_to(root_path)
       end
 
