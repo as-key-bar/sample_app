@@ -16,6 +16,7 @@ class Micropost < ApplicationRecord
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }, unless: :plain_repost?
+  validates :reposted_micropost_id, uniqueness: { scope: :user_id }, if: :plain_repost?
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],
                                       message: "must be a valid image format" },
                       size: { less_than: 5.megabytes,
