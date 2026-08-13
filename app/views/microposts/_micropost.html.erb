@@ -1,16 +1,32 @@
+<% display_post = micropost.plain_repost? ? micropost.reposted_micropost : micropost %>
+<% if display_post %>
 <li id="micropost-<%= micropost.id %>" class="micropost-card">
   <div>
-    <%= link_to "", micropost_path(micropost), class: "card-link" =%>
+    <%= link_to "", micropost_path(display_post), class: "card-link" =%>
 
-    <%= link_to gravatar_for(micropost.user, size: 50), micropost.user, class: "inner-link" %>
-    <span class="user"><%= link_to micropost.user.name, micropost.user, class: "inner-link" %></span>
+    <% if micropost.plain_repost? %>
+      <span class="repost-indicator">
+        <%= link_to micropost.user.name, micropost.user, class: "inner-link" %> reposted
+      </span>
+    <% end %>
+
+    <%= link_to gravatar_for(display_post.user, size: 50), display_post.user, class: "inner-link" %>
+    <span class="user"><%= link_to display_post.user.name, display_post.user, class: "inner-link" %></span>
 
     <span class="content">
-      <%= micropost.content %>
-      <% if micropost.image.attached? %>
-        <%= image_tag micropost.image.variant(:display) %>
+      <%= display_post.content %>
+      <% if display_post.image.attached? %>
+        <%= image_tag display_post.image.variant(:display) %>
       <% end %>
     </span>
+
+    <% if !micropost.plain_repost? && micropost.reposted_micropost.present? %>
+      <div class="quoted-micropost">
+        <%= link_to gravatar_for(micropost.reposted_micropost.user, size: 30), micropost.reposted_micropost.user, class: "inner-link" %>
+        <span class="user"><%= link_to micropost.reposted_micropost.user.name, micropost.reposted_micropost.user, class: "inner-link" %></span>
+        <span class="content"><%= micropost.reposted_micropost.content %></span>
+      </div>
+    <% end %>
 
     <span class="timestamp">
       Posted <%= time_ago_in_words(micropost.created_at) %> ago.
@@ -22,14 +38,22 @@
     </span>
     <span class="audience_action">
       <% if logged_in? %>
-        <div id="favorite_form_<%= micropost.id %>">
-          <% if current_user.favoriting?(micropost) %>
-            <%= render "microposts/unfavorite", micropost: micropost %>
+        <div id="favorite_form_<%= display_post.id %>">
+          <% if current_user.favoriting?(display_post) %>
+            <%= render "microposts/unfavorite", micropost: display_post %>
           <% else %>
-            <%= render "microposts/favorite", micropost: micropost %>
+            <%= render "microposts/favorite", micropost: display_post %>
+          <% end %>
+        </div>
+        <div id="repost_form_<%= display_post.id %>">
+          <% if current_user.plain_reposted?(display_post) %>
+            <%= render "microposts/unrepost", micropost: display_post, repost: current_user.plain_repost_of(display_post) %>
+          <% else %>
+            <%= render "microposts/repost", micropost: display_post %>
           <% end %>
         </div>
       <% end %>
     </span>
   </div>
 </li>
+<% end %>

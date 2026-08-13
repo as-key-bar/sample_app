@@ -15,7 +15,7 @@ class UsersController < ApplicationController
       flash.now[:warning] = "You are blocked by this user."
       @microposts = Micropost.none.paginate(page: params[:page])
     else
-      @microposts = @user.microposts.paginate(page: params[:page])
+      @microposts = @user.microposts.includes(reposted_micropost: :user).paginate(page: params[:page])
     end
   end
 

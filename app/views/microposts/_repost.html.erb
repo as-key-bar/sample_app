@@ -1,0 +1,4 @@
+<%= form_with(url: reposts_path, method: :post) do |f| %>
+  <%= hidden_field_tag :reposted_micropost_id, micropost.id %>
+  <%= f.submit "Repost", class: "btn btn-default" %>
+<% end %>
