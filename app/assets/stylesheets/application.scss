@@ -338,6 +338,38 @@ input {
       margin-bottom: 0;
     }
   }
+
+  .repost-indicator {
+    display: block;
+    font-size: 0.85em;
+    color: $gray-light;
+    margin-bottom: 4px;
+  }
+
+  .quoted-micropost {
+    display: block;
+    overflow: auto;
+    margin-left: 60px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px solid $gray-lighter;
+    border-radius: 4px;
+
+    .gravatar {
+      margin-top: 0;
+    }
+
+    .user {
+      margin-top: 0;
+      padding-top: 0;
+      font-weight: bold;
+    }
+
+    .content {
+      display: block;
+      margin-left: 40px;
+    }
+  }
 }
 
 aside {
