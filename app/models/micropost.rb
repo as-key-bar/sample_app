@@ -5,6 +5,9 @@ class Micropost < ApplicationRecord
   belongs_to :reply_to, class_name: "Micropost", optional: true
   has_many :replies, class_name: "Micropost", foreign_key: "reply_to_id", dependent: :nullify
 
+  belongs_to :reposted_micropost, class_name: "Micropost", optional: true
+  has_many :reposts, class_name: "Micropost", foreign_key: "reposted_micropost_id", dependent: :destroy
+
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_08_10_071654) do
+ActiveRecord::Schema[7.0].define(version: 2026_08_12_104636) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -66,8 +66,12 @@ ActiveRecord::Schema[7.0].define(version: 2026_08_10_071654) do
     t.datetime "updated_at", null: false
     t.string "searchkey"
     t.integer "reply_to_id"
+    t.integer "reposted_micropost_id"
+    t.boolean "plain_repost", default: false, null: false
     t.index ["reply_to_id"], name: "index_microposts_on_reply_to_id"
+    t.index ["reposted_micropost_id"], name: "index_microposts_on_reposted_micropost_id"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
+    t.index ["user_id", "reposted_micropost_id"], name: "index_microposts_on_plain_repost_uniqueness", unique: true, where: "plain_repost = TRUE"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
 
@@ -121,6 +125,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_08_10_071654) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "microposts", "microposts", column: "reply_to_id"
+  add_foreign_key "microposts", "microposts", column: "reposted_micropost_id"
   add_foreign_key "microposts", "users"
   add_foreign_key "notifications", "users"
 end
