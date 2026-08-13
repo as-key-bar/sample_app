@@ -15,7 +15,7 @@ class Micropost < ApplicationRecord
 
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true
-  validates :content, presence: true, length: { maximum: 140 }
+  validates :content, presence: true, length: { maximum: 140 }, unless: :plain_repost?
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],
                                       message: "must be a valid image format" },
                       size: { less_than: 5.megabytes,
@@ -23,9 +23,17 @@ class Micropost < ApplicationRecord
 
 
   def notification_recipient
-    User.find_by(id: self.reply_to.user_id)
+    if reply_to.present?
+      User.find_by(id: self.reply_to.user_id)
+    elsif reposted_micropost.present?
+      reposted_micropost.user
+    end
   end
+
   def denied?
-    reply_to.nil?
+    return true if reply_to.nil? && reposted_micropost.nil?
+    return true if reposted_micropost.present? && user == reposted_micropost.user
+
+    false
   end
 end
