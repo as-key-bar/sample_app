@@ -16,6 +16,7 @@
     resources :favorites, only: [:index]
   end
   resources :favorites,       only: [:create, :destroy]
+  resources :reposts,         only: [:create, :destroy]
   resources :microposts, only: [:create, :destroy, :show]
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
