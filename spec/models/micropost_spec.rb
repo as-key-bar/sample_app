@@ -52,24 +52,24 @@ RSpec.describe Micropost, type: :model do
     end
 
     it "プレーンリポストに対してユニーク制約" do
-      user.microposts.create!(reposted_micropost: original, plain_repost: true)
-      duplicate = user.microposts.build(reposted_micropost: original, plain_repost: true)
+      duplicate = users(:lana).microposts.build(reposted_micropost: microposts(:orange), plain_repost: true)
       expect(duplicate).not_to be_valid
     end
 
     it "引用リポストに対してユニーク制約がない" do
-      user.microposts.create!(reposted_micropost: original, plain_repost: false, content: "first quote")
-      second_quote = user.microposts.build(reposted_micropost: original, plain_repost: false, content: "second quote")
+      second_quote = users(:archer).microposts.build(reposted_micropost: microposts(:orange), plain_repost: false, content: "second quote")
       expect(second_quote).to be_valid
     end
 
     it "元投稿をdestroyすると、紐づくリポストも一緒に消える" do
-      repost = user.microposts.create!(reposted_micropost: original, plain_repost: true)
+      plain = microposts(:plain_repost_sample)
+      quote = microposts(:quote_repost_sample)
 
       expect {
-        original.destroy
-      }.to change(Micropost, :count).by(-2)
-      expect(Micropost.exists?(repost.id)).to be false
+        microposts(:orange).destroy
+      }.to change(Micropost, :count).by(-3) # orange本体 + plain_repost_sample + quote_repost_sample
+      expect(Micropost.exists?(plain.id)).to be false
+      expect(Micropost.exists?(quote.id)).to be false
     end
 
     it "自分の投稿への自己リポストは通知されない／他人の投稿へのリポストは元投稿者に通知される" do

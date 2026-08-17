@@ -194,8 +194,7 @@ RSpec.describe User, type: :model do
     end
 
     it "無関係なリポストは通常通りフィードに表示される" do
-      repost = lana.microposts.create!(reposted_micropost: microposts(:tau_manifesto), plain_repost: true)
-      expect(michael.feed.include?(repost)).to be_truthy
+      expect(michael.feed.include?(microposts(:plain_repost_sample))).to be_truthy
     end
 
     it "plain_reposted?が正しくtrue/falseを返す" do

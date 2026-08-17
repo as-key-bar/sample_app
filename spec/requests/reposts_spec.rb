@@ -43,10 +43,10 @@ RSpec.describe "Reposts", type: :request do
       end
 
       it "重複作成しようとすると失敗し、エラーメッセージが表示される" do
-        post "/reposts", params: { reposted_micropost_id: original.id }
+        log_in_as(users(:lana))
 
         expect {
-          post "/reposts", params: { reposted_micropost_id: original.id }
+          post "/reposts", params: { reposted_micropost_id: microposts(:orange).id }
         }.not_to change(Micropost, :count)
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to be_present
@@ -55,8 +55,8 @@ RSpec.describe "Reposts", type: :request do
 
     describe "DELETE /destroy" do
       it "自分のリポストを削除できる" do
-        post "/reposts", params: { reposted_micropost_id: original.id }
-        repost = user.microposts.find_by(reposted_micropost_id: original.id)
+        log_in_as(users(:lana))
+        repost = microposts(:plain_repost_sample)
 
         expect {
           delete "/reposts/#{repost.id}"
@@ -65,9 +65,7 @@ RSpec.describe "Reposts", type: :request do
       end
 
       it "他人のリポストは削除できない" do
-        post "/reposts", params: { reposted_micropost_id: original.id }
-        repost = user.microposts.find_by(reposted_micropost_id: original.id)
-        log_in_as(users(:lana))
+        repost = microposts(:plain_repost_sample) # lanaのリポスト、ログイン中はmichael
 
         expect {
           delete "/reposts/#{repost.id}"
