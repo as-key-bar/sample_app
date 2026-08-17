@@ -168,10 +168,43 @@ RSpec.describe User, type: :model do
   it "ブロック済みのユーザーのフォローボタンが無効化される" do
     michael = users(:michael)
     archer  = users(:archer)
-    
+
     michael.block(archer)
 
     expect(michael.following?(archer)).to be_falsey
+  end
+
+  context "リポスト機能関連" do
+    let(:michael) { users(:michael) }
+    let(:archer)  { users(:archer) }
+    let(:lana)    { users(:lana) } # michaelはlanaをfixture上で既にフォロー済み
+
+    it "ブロック中ユーザーの投稿のリポストがフィードから除外される" do
+      michael.block(archer)
+      repost = lana.microposts.create!(reposted_micropost: microposts(:archer), plain_repost: true)
+
+      expect(michael.feed.include?(repost)).to be_falsey
+    end
+
+    it "ミュート中ユーザーの投稿のリポストがフィードから除外される" do
+      michael.mute(archer)
+      repost = lana.microposts.create!(reposted_micropost: microposts(:archer), plain_repost: true)
+
+      expect(michael.feed.include?(repost)).to be_falsey
+    end
+
+    it "無関係なリポストは通常通りフィードに表示される" do
+      repost = lana.microposts.create!(reposted_micropost: microposts(:orange), plain_repost: true)
+      expect(michael.feed.include?(repost)).to be_truthy
+    end
+
+    it "plain_reposted?が正しくtrue/falseを返す" do
+      original = microposts(:archer)
+
+      expect(michael.plain_reposted?(original)).to be_falsey
+      michael.microposts.create!(reposted_micropost: original, plain_repost: true)
+      expect(michael.plain_reposted?(original)).to be_truthy
+    end
   end
 
 end
