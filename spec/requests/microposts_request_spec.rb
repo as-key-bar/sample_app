@@ -70,10 +70,41 @@ RSpec.describe MicropostsController, type: :request do
       expect {
         post microposts_path, params: { micropost: { content: "Lorem ipsum", reply_to_id: target_micropost.id } }
       }.to change(Micropost, :count)
-      
+
       get micropost_path(microposts(:reply_main))
       expect(response.body).to include("Lorem ipsum")
 
+    end
+  end
+
+  context "引用リポストのテスト" do
+    let(:target_micropost) { microposts(:reply_main) } # archerの投稿
+
+    it "contentとreposted_micropost_idを渡すと、引用リポストとして作成される" do
+      log_in_as(users(:michael))
+      expect {
+        post microposts_path, params: { micropost: { content: "nice post", reposted_micropost_id: target_micropost.id } }
+      }.to change(Micropost, :count).by(1)
+
+      repost = users(:michael).microposts.find_by(reposted_micropost_id: target_micropost.id)
+      expect(repost.content).to eq("nice post")
+      expect(repost.plain_repost).to be false
+    end
+
+    it "同じ投稿への引用リポストは複数回作成できる" do
+      log_in_as(users(:michael))
+      post microposts_path, params: { micropost: { content: "first quote", reposted_micropost_id: target_micropost.id } }
+
+      expect {
+        post microposts_path, params: { micropost: { content: "second quote", reposted_micropost_id: target_micropost.id } }
+      }.to change(Micropost, :count).by(1)
+    end
+
+    it "引用リポストにも通知が発行される" do
+      log_in_as(users(:michael))
+      expect {
+        post microposts_path, params: { micropost: { content: "nice post", reposted_micropost_id: target_micropost.id } }
+      }.to change(Notification, :count).by(1)
     end
   end
 end
