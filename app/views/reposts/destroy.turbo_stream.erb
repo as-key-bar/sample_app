@@ -1,0 +1,3 @@
+<%= turbo_stream.update "repost_form_#{@reposted_micropost.id}" do %>
+  <%= render "microposts/repost", micropost: @reposted_micropost %>
+<% end %>
