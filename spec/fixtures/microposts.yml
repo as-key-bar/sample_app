@@ -141,6 +141,20 @@ reply_blocker:
   user: blocking
   reply_to: reply_blocked
 
+plain_repost_sample:
+  created_at: <%= 5.minutes.ago %>
+  user: lana
+  reposted_micropost: orange
+  plain_repost: true
+
+quote_repost_sample:
+  content: "This is such a great post!"
+  searchkey: "<%= TextNormalizer.convert_to_searchkey('This is such a great post!') %>"
+  created_at: <%= 5.minutes.ago %>
+  user: archer
+  reposted_micropost: orange
+  plain_repost: false
+
 
 <% 30.times do |n| %>
 <% text = Faker::Lorem.sentence(word_count: 5) %>

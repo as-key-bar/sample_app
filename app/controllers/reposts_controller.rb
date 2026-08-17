@@ -20,16 +20,18 @@ class RepostsController < ApplicationController
   end
 
   def destroy
-    @repost = current_user.microposts.find_by(id: params[:id])
-    if @repost.present?
-      @reposted_micropost = @repost.reposted_micropost
-      @repost.destroy
-      respond_to do |format|
-        format.html { redirect_back_or_to root_path }
-        format.turbo_stream
+    if current_user.present?
+      @repost = current_user.microposts.find_by(id: params[:id])
+      if @repost.present?
+        @reposted_micropost = @repost.reposted_micropost
+        @repost.destroy
+        respond_to do |format|
+          format.html { redirect_back_or_to root_path }
+          format.turbo_stream
+        end
+        return
       end
-    else
-      redirect_back_or_to root_path
     end
+    redirect_back_or_to root_path
   end
 end
