@@ -5,6 +5,9 @@
   <% if local_assigns[:reply_to_id].present? %>
     <%= f.hidden_field :reply_to_id, value: reply_to_id %>
   <% end %>
+  <% if local_assigns[:reposted_micropost_id].present? %>
+    <%= f.hidden_field :reposted_micropost_id, value: reposted_micropost_id %>
+  <% end %>
   <div class="field">
     <%= f.text_area :content, placeholder: "Compose new micropost..." %>
   </div>
