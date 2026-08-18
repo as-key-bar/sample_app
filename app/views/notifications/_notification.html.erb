@@ -11,15 +11,20 @@
       <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
       <% if micropost.reposted_micropost.present? %>
         <% if micropost.plain_repost? %>
-          <span class="action">reposted your post</span>
+          <span class="action"><%= link_to "reposted your post", micropost_path(micropost.reposted_micropost) %></span>
         <% else %>
-          <span class="action">quoted your post</span>
+          <span class="action"><%= link_to "quoted your post", micropost_path(micropost.reposted_micropost) %></span>
           <span class="content"><%= micropost.content %></span>
         <% end %>
       <% else %>
         <span class="action">replyed on your post</span>
         <span class="content"><%= micropost.content %></span>
       <% end %>
+    <% elsif notification.notifiable_type == "Favorite" %>
+      <% favorite = notification.notifiable %>
+      <%= link_to gravatar_for(favorite.favoriter, size: 50), favorite.favoriter %>
+      <span class="user"><%= link_to favorite.favoriter.name, favorite.favoriter %></span>
+      <span class="action"><%= link_to "favorited your post", micropost_path(favorite.favorited) %></span>
     <% end %>
 
     <span class="timestamp">
