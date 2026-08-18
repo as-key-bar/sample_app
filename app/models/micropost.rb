@@ -13,6 +13,8 @@ class Micropost < ApplicationRecord
   end
   has_many :favorites, foreign_key: "favorited_id", dependent: :destroy
 
+  before_validation :treat_as_plain_repost_when_content_blank
+
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }, unless: :plain_repost?
@@ -37,4 +39,10 @@ class Micropost < ApplicationRecord
 
     false
   end
+
+  private
+
+    def treat_as_plain_repost_when_content_blank
+      self.plain_repost = true if reposted_micropost.present? && content.blank?
+    end
 end

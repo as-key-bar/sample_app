@@ -46,9 +46,10 @@ RSpec.describe Micropost, type: :model do
       expect(quote).to be_valid
     end
 
-    it "引用リポストの作成の際にcontentが必須である" do
+    it "引用リポストのcontentが空の場合、プレーンリポストとして扱われる" do
       quote = user.microposts.build(reposted_micropost: original, plain_repost: false, content: nil)
-      expect(quote).not_to be_valid
+      expect(quote).to be_valid
+      expect(quote.plain_repost).to be true
     end
 
     it "プレーンリポストに対してユニーク制約" do
