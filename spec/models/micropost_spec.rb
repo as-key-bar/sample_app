@@ -73,6 +73,30 @@ RSpec.describe Micropost, type: :model do
       expect(Micropost.exists?(quote.id)).to be false
     end
 
+    it "自身が作成した引用リポストに対する、プレーンリポスト" do
+      own_quote = user.microposts.create!(reposted_micropost: original, plain_repost: false, content: "my own quote")
+      repost = user.microposts.build(reposted_micropost: own_quote, plain_repost: true)
+      expect(repost).to be_valid
+    end
+
+    it "他人が作成した引用リポストに対する、プレーンリポスト" do
+      repost = user.microposts.build(reposted_micropost: microposts(:quote_repost_sample), plain_repost: true)
+      expect(repost).to be_valid
+    end
+
+    it "自身が作成した引用リポストに対する、コンテンツ空引用リポスト" do
+      own_quote = user.microposts.create!(reposted_micropost: original, plain_repost: false, content: "my own quote")
+      repost = user.microposts.build(reposted_micropost: own_quote, plain_repost: false, content: nil)
+      expect(repost).to be_valid
+      expect(repost.plain_repost).to be true
+    end
+
+    it "他人が作成した引用リポストに対する、コンテンツ空引用リポスト" do
+      repost = user.microposts.build(reposted_micropost: microposts(:quote_repost_sample), plain_repost: false, content: nil)
+      expect(repost).to be_valid
+      expect(repost.plain_repost).to be true
+    end
+
     it "自分の投稿への自己リポストは通知されない／他人の投稿へのリポストは元投稿者に通知される" do
       own_post = microposts(:orange) 
 
