@@ -3,10 +3,13 @@ class Notification < ApplicationRecord
   belongs_to :user
 
   def sender
-    if notifiable == Relationship
+    case notifiable_type
+    when "Relationship"
       notifiable.follower
-    elsif notifiable == Micropost
+    when "Micropost"
       notifiable.user
+    when "Favorite"
+      notifiable.favoriter
     end
   end
 end
