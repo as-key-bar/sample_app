@@ -64,7 +64,7 @@ search_6:
   created_at: <%= 5.minutes.ago %>
   user: archer
 
-search_6:
+search_11:
   content: "今回はテストです"
   searchkey: "<%= TextNormalizer.convert_to_searchkey('今回はテストです') %>"
   created_at: <%= 5.minutes.ago %>
