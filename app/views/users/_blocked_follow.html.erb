@@ -1,4 +1,4 @@
 <%= form_with(model: current_user.active_relationships.find_by(followed: @user),
               html: { method: :delete }) do |f| %>
-  <%= f.submit "Follow", class: "btn", disabled: true %>
+  <%= f.submit "You are blocked by this user", class: "btn", disabled: true %>
 <% end %>
