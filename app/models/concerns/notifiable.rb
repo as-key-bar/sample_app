@@ -12,9 +12,8 @@ module Notifiable
   end
 
   def create_notifications
-    return if denied? 
-    notification = Notification.create(notifiable: self, user: notification_recipient)
-    notification.save!
+    return if denied?
+    Notification.create!(notifiable: self, user: notification_recipient)
   end
 end
 
