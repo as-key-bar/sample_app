@@ -61,6 +61,22 @@ RSpec.describe MicropostsController, type: :request do
     end
 
   end
+
+  context "リプライ一覧のブロック・ミュートフィルタ" do
+    let(:viewer) { users(:michael) }
+    let(:author) { users(:archer) }
+    let(:target_content) { "reply visibility test content" }
+    let!(:root_post) { viewer.microposts.create!(content: "root post for reply visibility test") }
+    let!(:reply) { author.microposts.create!(content: target_content, reply_to: root_post) }
+
+    before { log_in_as(viewer) }
+
+    def perform_request
+      get micropost_path(root_post)
+    end
+
+    it_behaves_like "hides content from blocked and muted authors"
+  end
   
   context "micropostリプライのテスト" do
       let(:target_micropost) { microposts(:reply_main) }

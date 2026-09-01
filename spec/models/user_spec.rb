@@ -174,6 +174,64 @@ RSpec.describe User, type: :model do
     expect(michael.following?(archer)).to be_falsey
   end
 
+  it "自分がブロックしている相手をフォローしようとした際に、エラーメッセージを表示して弾く" do
+    michael = users(:michael)
+    archer  = users(:archer)
+
+    michael.block(archer)
+
+    expect {
+      michael.follow(archer)
+    }.not_to change(michael.following, :count)
+  end
+
+  describe "#interaction_blocked_with?" do
+    let(:michael) { users(:michael) }
+    let(:archer)  { users(:archer) }
+
+    it "ブロック関係がなければfalseを返す" do
+      expect(michael.interaction_blocked_with?(archer)).to be_falsey
+    end
+
+    it "自分が相手をブロックしていればtrueを返す" do
+      michael.block(archer)
+      expect(michael.interaction_blocked_with?(archer)).to be_truthy
+    end
+
+    it "相手が自分をブロックしていればtrueを返す" do
+      archer.block(michael)
+      expect(michael.interaction_blocked_with?(archer)).to be_truthy
+    end
+
+    it "ミュートしているだけならfalseを返す" do
+      michael.mute(archer)
+      expect(michael.interaction_blocked_with?(archer)).to be_falsey
+    end
+  end
+
+  describe "#favorite" do
+    let(:michael) { users(:michael) }
+    let(:archer)  { users(:archer) }
+    let(:archer_post) { archer.microposts.create!(content: "favorite validation test post") }
+
+    it "ブロック関係がなければいいねできる" do
+      expect(michael.favorite(archer_post)).to be_truthy
+      expect(michael.favoriting?(archer_post)).to be_truthy
+    end
+
+    it "ブロックしている相手の投稿にはいいねできない" do
+      michael.block(archer)
+      expect(michael.favorite(archer_post)).to be_falsey
+      expect(michael.favoriting?(archer_post)).to be_falsey
+    end
+
+    it "自分をブロックしている相手の投稿にはいいねできない" do
+      archer.block(michael)
+      expect(michael.favorite(archer_post)).to be_falsey
+      expect(michael.favoriting?(archer_post)).to be_falsey
+    end
+  end
+
   context "リポスト機能関連" do
     let(:michael) { users(:michael) }
     let(:archer)  { users(:archer) }
@@ -195,6 +253,20 @@ RSpec.describe User, type: :model do
 
     it "無関係なリポストは通常通りフィードに表示される" do
       expect(michael.feed.include?(microposts(:plain_repost_sample))).to be_truthy
+    end
+
+    it "ブロックしている相手の投稿はリポストできない" do
+      michael.block(archer)
+      repost = michael.microposts.build(reposted_micropost: microposts(:archer), plain_repost: true)
+
+      expect(repost.save).to be_falsey
+    end
+
+    it "自分をブロックしている相手の投稿はリポストできない" do
+      archer.block(michael)
+      repost = michael.microposts.build(reposted_micropost: microposts(:archer), plain_repost: true)
+
+      expect(repost.save).to be_falsey
     end
 
     it "plain_reposted?が正しくtrue/falseを返す" do
