@@ -34,7 +34,7 @@ class MicropostsController < ApplicationController
       flash[:danger] = "You are blocked by this user"
       redirect_back(fallback_location: root_url)
     else
-      @replies = @micropost.replies.paginate(page: params[:page])
+      @replies = @micropost.replies.visible_to(current_user).paginate(page: params[:page])
       @reply_micropost = current_user.microposts.build
     end
   end
