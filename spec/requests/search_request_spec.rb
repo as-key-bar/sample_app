@@ -3,6 +3,25 @@ require 'rails_helper'
 RSpec.describe "Searches", type: :request do
   fixtures :users, :microposts
 
+  context "ブロック・ミュートによる検索結果フィルタ" do
+    let(:viewer) { users(:michael) }
+    let(:author) { users(:archer) }
+    let(:search_query) { "xyzsearchvisibilitymarker" }
+    let(:target_content) { "#{search_query} unique post content" }
+
+    before do
+      author.microposts.create!(content: target_content,
+                                 searchkey: TextNormalizer.convert_to_searchkey(target_content))
+      log_in_as(viewer)
+    end
+
+    def perform_request
+      get search_path, params: { q: search_query }
+    end
+
+    it_behaves_like "hides content from blocked and muted authors"
+  end
+
   describe "GET /search" do
     it "検索画面に遷移できること" do
       get search_path
