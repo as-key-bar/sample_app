@@ -8,4 +8,8 @@ class Relationship < ApplicationRecord
   def notification_recipient
     followed
   end
+
+  def actor
+    follower
+  end
 end
