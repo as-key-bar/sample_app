@@ -3,16 +3,19 @@ class FavoritesController < ApplicationController
 
   def index
     @user = User.find(params[:user_id])
-    @microposts = @user.favorite_microposts.paginate(page: params[:page])
+    @microposts = @user.favorite_microposts.visible_to(current_user).paginate(page: params[:page])
   end
 
   def create
     @favorited_post = Micropost.find(params[:favorited_id])
     if current_user.present?
-      current_user.favorite(@favorited_post)
-      respond_to do |format|
-        format.html { redirect_back_or_to root_path}
-        format.turbo_stream
+      if current_user.favorite(@favorited_post)
+        respond_to do |format|
+          format.html { redirect_back_or_to root_path}
+          format.turbo_stream
+        end
+      else
+        redirect_back_or_to root_path, alert: "This action is not available."
       end
     else
       redirect_back_or_to root_path, alert: "You need to log in to favorite posts."

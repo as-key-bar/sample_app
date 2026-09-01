@@ -21,7 +21,7 @@ class SearchController < ApplicationController
       target_user_ids << current_user.id
     end
     
-    scope = Micropost.all
+    scope = Micropost.visible_to(current_user)
     @microposts = queries.reduce(scope) do |result, q|
       searchkey = convert_to_searchkey(q)
       if current_user && follow_only
