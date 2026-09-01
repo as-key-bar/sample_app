@@ -13,7 +13,7 @@ module Notifiable
 
   def create_notifications
     return if denied?
-    Notification.create!(notifiable: self, user: notification_recipient)
+    Notification.create!(notifiable: self, user: notification_recipient, actor: actor)
   end
 end
 
