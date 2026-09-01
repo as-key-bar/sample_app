@@ -32,4 +32,22 @@ RSpec.describe "Favorites Show", type: :request do
       end
     end
   end
+
+  context "ブロック・ミュートによるいいね一覧フィルタ" do
+    let(:viewer) { users(:michael) }
+    let(:author) { users(:archer) }
+    let(:target_content) { "favorite showall visibility test post" }
+
+    before do
+      post = author.microposts.create!(content: target_content)
+      viewer.favorite(post)
+      log_in_as(viewer)
+    end
+
+    def perform_request
+      get user_favorites_path(viewer)
+    end
+
+    it_behaves_like "hides content from blocked and muted authors"
+  end
 end
