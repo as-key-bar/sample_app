@@ -23,7 +23,15 @@ class Micropost < ApplicationRecord
                                       message: "must be a valid image format" },
                       size: { less_than: 5.megabytes,
                               message:   "should be less than 5MB" }
+  validate :reposted_micropost_not_blocked, if: :reposted_micropost
 
+  def self.visible_to(viewer)
+    return all if viewer.nil?
+
+    excluded_user_ids = viewer.visibility_excluded_user_ids
+    excluded_microposts = Micropost.unscoped { Micropost.where(user_id: excluded_user_ids).select(:id) }
+    where.not(user_id: excluded_user_ids).where.not(reposted_micropost_id: excluded_microposts)
+  end
 
   def notification_recipient
     if reply_to.present?
@@ -31,6 +39,10 @@ class Micropost < ApplicationRecord
     elsif reposted_micropost.present?
       reposted_micropost.user
     end
+  end
+
+  def actor
+    user
   end
 
   def denied?
@@ -44,5 +56,11 @@ class Micropost < ApplicationRecord
 
     def treat_as_plain_repost_when_content_blank
       self.plain_repost = true if reposted_micropost.present? && content.blank?
+    end
+
+    def reposted_micropost_not_blocked
+      return if user.nil? || !user.interaction_blocked_with?(reposted_micropost.user)
+
+      errors.add(:reposted_micropost, "cannot repost a blocked user's post")
     end
 end
