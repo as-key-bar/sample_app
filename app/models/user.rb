@@ -115,21 +115,26 @@ class User < ApplicationRecord
   def feed
     following_ids = "SELECT followed_id FROM relationships
                      WHERE  follower_id = :user_id"
-    excluded_user_ids = (Block.where(blocker_id: id).pluck(:blocked_id) +
-                          Mute.where(muter_id: id).pluck(:muted_id) +
-                          Block.where(blocked_id: id).pluck(:blocker_id)).uniq
-    excluded_microposts = Micropost.where(user_id: excluded_user_ids).reorder(nil).select(:id)
 
     Micropost
         .where("microposts.user_id IN (#{following_ids}) OR microposts.user_id = :user_id", user_id: id)
         .includes(:user, image_attachment: :blob, reposted_micropost: :user)
-        .where.not(user_id: excluded_user_ids)
-        .where.not(reposted_micropost_id: excluded_microposts)
+        .visible_to(self)
+  end
+
+  # ブロック・ミュートにより自分から見えなくなっているユーザーIDの一覧を返す
+  # 自分がブロック/ミュートしている相手、および自分をブロックしている相手
+  def visibility_excluded_user_ids
+    (blocking.pluck(:id) + muting.pluck(:id) + blocked.pluck(:id)).uniq
+  end
+
+  def interaction_blocked_with?(other_user)
+    blocked?(other_user) || blocking?(other_user)
   end
 
   # ユーザーをフォローする
   def follow(other_user)
-    return false if blocked?(other_user)
+    return false if interaction_blocked_with?(other_user)
     return false if self == other_user
     following << other_user
     true
@@ -189,9 +194,9 @@ class User < ApplicationRecord
   end
 
   def favorite(micropost)
-    if !favoriting?(micropost)
-      favorites.create(favorited_id: micropost.id)
-    end
+    return true if favoriting?(micropost)
+
+    favorites.create(favorited_id: micropost.id).persisted?
   end
 
   def unfavorite(micropost)
