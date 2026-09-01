@@ -107,4 +107,22 @@ RSpec.describe "Relationships", type: :request do
       end
     end
   end
+
+  context "通知一覧のブロック・ミュートフィルタ(Favorite通知)" do
+    let(:viewer) { users(:michael) }
+    let(:author) { users(:archer) }
+    let(:target_content) { author.name }
+
+    before do
+      post = viewer.microposts.create!(content: "post to be favorited")
+      author.favorite(post)
+      log_in_as(viewer)
+    end
+
+    def perform_request
+      get notifications_path
+    end
+
+    it_behaves_like "hides content from blocked and muted authors"
+  end
 end
