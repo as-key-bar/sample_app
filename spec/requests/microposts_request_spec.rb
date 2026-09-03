@@ -77,6 +77,63 @@ RSpec.describe MicropostsController, type: :request do
 
     it_behaves_like "hides content from blocked and muted authors"
   end
+
+  context "ブロック・ミュート中の投稿内容のマスキング" do
+    let(:viewer) { users(:michael) }
+    let(:author) { users(:archer) }
+    let(:masked_message) { "This post is hidden." }
+
+    before { log_in_as(viewer) }
+
+    context "詳細画面のメイン投稿" do
+      let!(:target_post) { author.microposts.create!(content: "masking test main post") }
+
+      it "通常時は本文が表示されること(前提条件)" do
+        get micropost_path(target_post)
+        expect(response.body).to include("masking test main post")
+        expect(response.body).not_to include(masked_message)
+      end
+
+      it "ブロックしている相手の投稿は本文が隠れること" do
+        viewer.block(author)
+        get micropost_path(target_post)
+        expect(response.body).not_to include("masking test main post")
+        expect(response.body).to include(masked_message)
+      end
+
+      it "ミュートしている相手の投稿は本文が隠れること" do
+        viewer.mute(author)
+        get micropost_path(target_post)
+        expect(response.body).not_to include("masking test main post")
+        expect(response.body).to include(masked_message)
+      end
+    end
+
+    context "リプライ先投稿" do
+      let!(:parent_post) { author.microposts.create!(content: "masking test parent post") }
+      let!(:child_post) { viewer.microposts.create!(content: "masking test child post", reply_to: parent_post) }
+
+      it "ブロックしている相手のリプライ先投稿は本文が隠れること" do
+        viewer.block(author)
+        get micropost_path(child_post)
+        expect(response.body).not_to include("masking test parent post")
+        expect(response.body).to include(masked_message)
+      end
+    end
+
+    context "引用リポストの引用元投稿" do
+      let!(:original_post) { author.microposts.create!(content: "masking test original post") }
+      let!(:quote_post) { viewer.microposts.create!(content: "masking test quote post", reposted_micropost: original_post, plain_repost: false) }
+
+      it "ブロックしている相手の引用元投稿は本文が隠れること" do
+        viewer.block(author)
+        get micropost_path(quote_post)
+        expect(response.body).to include("masking test quote post")
+        expect(response.body).not_to include("masking test original post")
+        expect(response.body).to include(masked_message)
+      end
+    end
+  end
   
   context "micropostリプライのテスト" do
       let(:target_micropost) { microposts(:reply_main) }

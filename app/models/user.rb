@@ -132,6 +132,10 @@ class User < ApplicationRecord
     blocked?(other_user) || blocking?(other_user)
   end
 
+  def masks_content_of?(other_user)
+    interaction_blocked_with?(other_user) || muting?(other_user)
+  end
+
   # ユーザーをフォローする
   def follow(other_user)
     return false if interaction_blocked_with?(other_user)

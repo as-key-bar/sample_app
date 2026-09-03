@@ -303,10 +303,18 @@ input {
   list-style: none;
   padding: 0;
   li {
-    position: relative;
-    padding: 10px 0;
     border-top: 1px solid #e8e8e8;
   }
+}
+
+/* micropost card本体のスタイル。ol.microposts配下だけでなく、
+   投稿詳細画面(microposts/show.html.erb)のようにol.microposts以外の
+   コンテナに置かれる場合でも同じ見た目になるよう、.micropost-cardに
+   スコープする(ol.microposts配下限定にしない) */
+.micropost-card {
+  position: relative;
+  padding: 10px 0;
+
   .user {
     margin-top: 5em;
     padding-top: 0;
@@ -318,6 +326,10 @@ input {
       display: block;
       padding: 5px 0;
     }
+  }
+  .masked-content {
+    color: $gray-light;
+    font-style: italic;
   }
   .timestamp {
     color: $gray-light;
@@ -382,11 +394,31 @@ input {
   .quoted-micropost {
     display: block;
     overflow: auto;
+    position: relative;
     margin-left: 60px;
     margin-top: 8px;
-    padding: 8px 10px;
+    padding: 10px 12px;
     border: 1px solid $gray-lighter;
-    border-radius: 4px;
+    border-radius: 12px;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: $gray-lighter;
+    }
+
+    .card-link {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .inner-link {
+      position: relative;
+      z-index: 2;
+    }
 
     .gravatar {
       margin-top: 0;
@@ -401,6 +433,8 @@ input {
     .content {
       display: block;
       margin-left: 40px;
+      position: relative;
+      z-index: 2;
     }
   }
 }
@@ -464,6 +498,8 @@ span.image {
   .parent-post {
     display: flow-root;
     margin-bottom: 0;
+    padding: 15px 15px 20px;
+    position: relative;
 
     .thread-label {
       font-size: 0.85rem;
@@ -473,6 +509,15 @@ span.image {
       display: block;
     }
 
+    &::after {
+      content: "";
+      position: absolute;
+      top: 97px;
+      left: 40px;
+      bottom: -30px;
+      width: 2px;
+      background-color: $gray-lighter;
+    }
   }
 
   .main-post {

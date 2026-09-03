@@ -1,4 +1,6 @@
-<% provide(:title, @micropost.content) %>
+<% display_post = @micropost.plain_repost? ? @micropost.reposted_micropost : @micropost %>
+<% masked = logged_in? && display_post && current_user.masks_content_of?(display_post.user) %>
+<% provide(:title, masked ? "Micropost" : @micropost.content) %>
 
 <div class="row">
   <div class="col-md-8 offset-md-2 micropost-thread-container">

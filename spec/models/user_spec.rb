@@ -209,6 +209,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#masks_content_of?" do
+    let(:michael) { users(:michael) }
+    let(:archer)  { users(:archer) }
+
+    it "ブロック・ミュートの関係がなければfalseを返す" do
+      expect(michael.masks_content_of?(archer)).to be_falsey
+    end
+
+    it "自分が相手をブロックしていればtrueを返す" do
+      michael.block(archer)
+      expect(michael.masks_content_of?(archer)).to be_truthy
+    end
+
+    it "相手が自分をブロックしていればtrueを返す" do
+      archer.block(michael)
+      expect(michael.masks_content_of?(archer)).to be_truthy
+    end
+
+    it "ミュートしていればtrueを返す" do
+      michael.mute(archer)
+      expect(michael.masks_content_of?(archer)).to be_truthy
+    end
+  end
+
   describe "#favorite" do
     let(:michael) { users(:michael) }
     let(:archer)  { users(:archer) }
