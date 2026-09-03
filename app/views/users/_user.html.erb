@@ -1,34 +1,36 @@
 <li>
-  <%= gravatar_for user, size: 50 %>
-  <%= link_to user.name, user %>
-  <% if current_user.admin? && !current_user?(user) %>
-    | <%= link_to "delete", user, data: { "turbo-method": :delete,
-                                          turbo_confirm: "You sure?" } %>
-  <% end %>
+  <div class="user-info">
+    <%= gravatar_for user, size: 50 %>
+    <%= link_to user.name, user %>
+    <% if current_user.admin? && !current_user?(user) %>
+      | <%= link_to "delete", user, data: { "turbo-method": :delete,
+                                            turbo_confirm: "You sure?" } %>
+    <% end %>
+  </div>
 
-  <% if current_user.blocking?(user) %>
-    <%= form_with(model: current_user.active_blocks.find_by(blocked: user),
-                  html: { method: :delete }) do |f| %>
-      <%= f.submit "Unblock"%>
+  <div class="user-actions">
+    <% if current_user.blocking?(user) %>
+      <%= form_with(model: current_user.active_blocks.find_by(blocked: user),
+                    html: { method: :delete }) do |f| %>
+        <%= f.submit "Unblock"%>
+      <% end %>
+    <% else %>
+      <%= form_with(model: current_user.active_blocks.build) do |f| %>
+        <div><%= hidden_field_tag :blocked_id, user.id %></div>
+        <%= f.submit "block", data: { turbo_confirm: "You sure?" } %>
+      <% end %>
     <% end %>
-  <% else %>                                          
-    <%= form_with(model: current_user.active_blocks.build) do |f| %>
-      <div><%= hidden_field_tag :blocked_id, user.id %></div>
-      <%= f.submit "block", data: { turbo_confirm: "You sure?" } %>
-    <% end %>
-  <% end %>
-  
 
-  <% if current_user.muting?(user) %>
-    <%= form_with(model: current_user.active_mutes.find_by(muted: user),
-                  html: { method: :delete }) do |f| %>
-      <%= f.submit "Unmute"%>
+    <% if current_user.muting?(user) %>
+      <%= form_with(model: current_user.active_mutes.find_by(muted: user),
+                    html: { method: :delete }) do |f| %>
+        <%= f.submit "Unmute"%>
+      <% end %>
+    <% else %>
+      <%= form_with(model: current_user.active_mutes.build) do |f| %>
+        <div><%= hidden_field_tag :muted_id, user.id %></div>
+        <%= f.submit "mute"%>
+      <% end %>
     <% end %>
-  <% else %>                                          
-    <%= form_with(model: current_user.active_mutes.build) do |f| %>
-      <div><%= hidden_field_tag :muted_id, user.id %></div>
-      <%= f.submit "mute"%>
-    <% end %>
-  <% end %>
-
+  </div>
 </li>

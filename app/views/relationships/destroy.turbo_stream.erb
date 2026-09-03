@@ -1,5 +1,5 @@
-<%= turbo_stream.update "follow_form" do %>
-  <%= render partial: "users/follow" %>
+<%= turbo_stream.update "follow_form_#{@user.id}" do %>
+  <%= render partial: "users/users_index_follow", locals: { user: @user } %>
 <% end %>
 <%= turbo_stream.update "followers" do %>
   <%= @user.followers.count %>

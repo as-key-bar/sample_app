@@ -4,7 +4,7 @@
 <%= will_paginate %>
 
 <ul class="users">
-  <%= render @users %>
+  <%= render partial: "users_index_user", collection: @users, as: :user %>
 </ul>
 
 <%= will_paginate %>
