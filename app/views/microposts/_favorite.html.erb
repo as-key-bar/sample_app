@@ -1,4 +1,6 @@
 <%= form_with(model: current_user.favorites.build) do |f| %>
   <div><%= hidden_field_tag :favorited_id, micropost.id %></div>
-  <%= f.submit "Like", class: "btn btn-default" %>
+  <%= f.button type: "submit", class: "btn btn-icon btn-default", "aria-label": "いいね" do %>
+    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+  <% end %>
 <% end %>

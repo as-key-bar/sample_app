@@ -1,4 +1,6 @@
 <%= form_with(url: reposts_path, method: :post) do |f| %>
   <%= hidden_field_tag :reposted_micropost_id, micropost.id %>
-  <%= f.submit "Repost", class: "btn btn-default" %>
+  <%= f.button type: "submit", class: "btn btn-icon btn-default", "aria-label": "リポスト" do %>
+    <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+  <% end %>
 <% end %>

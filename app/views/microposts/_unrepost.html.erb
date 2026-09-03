@@ -1,3 +1,5 @@
 <%= form_with(url: repost_path(repost), method: :delete) do |f| %>
-  <%= f.submit "Undo Repost", class: "btn btn-primary" %>
+  <%= f.button type: "submit", class: "btn btn-icon btn-icon-active btn-default", "aria-label": "リポスト解除" do %>
+    <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+  <% end %>
 <% end %>
