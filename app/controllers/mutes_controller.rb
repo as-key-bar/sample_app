@@ -2,29 +2,40 @@ class MutesController < ApplicationController
   before_action :logged_in_user
 
   def create
-    #idのバリデーション
-    if !params[:muted_id].match?(/\A\d+\z/)
-      redirect_to root_path, status: :bad_request
-      return
-    elsif current_user.id == params[:muted_id].to_i
-      redirect_to root_path, status: :bad_request
+    @user = User.find_by(id: params[:muted_id])
+
+    if @user.nil? || !current_user.mute(@user)
+      respond_to do |format|
+        format.html do
+          flash[:warning] = "This user could not be muted."
+          redirect_back(fallback_location: root_path)
+        end
+        format.turbo_stream { head :unprocessable_entity }
+      end
       return
     end
 
-    if user = User.find_by(id: params[:muted_id])
-      current_user.mute(user)
-      redirect_back(fallback_location: root_path) 
-    else
-      redirect_to root_path, status: :not_found
+    respond_to do |format|
+      format.html { redirect_to @user }
+      format.turbo_stream
     end
-
   end
 
   def destroy
-    if mute = current_user.active_mutes.find_by(id: params[:id])
-      target_user = mute.muted
-      current_user.unmute(target_user)
+    mute = current_user.active_mutes.find_by(id: params[:id])
+
+    if mute
+      @user = mute.muted
+      current_user.unmute(@user)
+      respond_to do |format|
+        format.html { redirect_to @user, status: :see_other }
+        format.turbo_stream
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_back(fallback_location: root_path) }
+        format.turbo_stream { head :ok }
+      end
     end
-    redirect_back(fallback_location: root_path)
   end
 end
