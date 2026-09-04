@@ -1,104 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "Relationships", type: :request do
+RSpec.describe "Mutes", type: :request do
   fixtures :users, :relationships
 
   let(:user) { users(:michael) }
   let(:other_user) { users(:archer) }
 
-  describe "POST /mute" do
-    context "ログインしていない場合" do
-      it "ミュートできないか" do
-        expect {
-          post mutes_path, params: { muted_id: other_user.id }
-        }.not_to change(Mute, :count)
-        expect(response).to redirect_to(login_path)
-      end
-    end
-
-
-    context "ログインしている場合" do
-      before do
-        log_in_as(user)
-      end
-
-      it "ミュートできるか" do
-        expect {
-          post mutes_path, params: { muted_id: other_user.id }
-        }.to change(Mute, :count).by(1)
-
-      end
-
-      let(:invalid_user_id) { 0 }
-
-      it "存在しないアカウントへのミュート" do
-        expect {
-          post mutes_path, params: { muted_id: invalid_user_id }        
-        }.to change(Mute, :count).by(0)
-        expect(response).to have_http_status(:not_found)
-      end
-
-      it "自分自身をミュートできない" do
-        expect {
-          post mutes_path, params: { muted_id: user.id }
-        }.not_to change(Mute, :count)
-        expect(response).to have_http_status(:bad_request)
-      end
-
-      it "不正な文字列をIDとして渡した場合ミュートできない" do
-        expect {
-          post mutes_path, params: { muted_id: "invalid" }
-        }.not_to change(Mute, :count)
-        expect(response).to have_http_status(:bad_request)
-      end
-
-
-      it "すでにミュートしているユーザーを再度ミュートできない" do
-        user.mute(other_user) 
-        expect {
-          post mutes_path,
-              params: { muted_id: other_user.id },
-              headers: { "HTTP_REFERER" => user_path(other_user) }
-        }.not_to change(Mute, :count)
-
-        expect(response).to redirect_to(user_path(other_user))      
-      end
-    end
+  let(:model_class) { Mute }
+  let(:create_path) { mutes_path }
+  let(:create_param_key) { :muted_id }
+  let(:active_association) { :active_mutes }
+  let(:target_fk) { :muted_id }
+  let(:member_path) { ->(record) { mute_path(record) } }
+  let(:trigger_precondition_failure) do
+    ->(user, other_user) { user.mute(other_user) }
   end
 
-  describe "DELETE /mute/:id" do
-    let!(:mute) { user.active_mutes.create!(muted_id: other_user.id) }
-    context "ログインしていない場合" do
-      it "ミュート解除できないか" do
-        expect {
-          delete mute_path(mute)
-        }.not_to change(Mute, :count)
-        expect(response).to redirect_to(login_path)
-      end
-    end
-
-    context "ログインしている場合" do
-      before do
-        log_in_as(user)
-      end
-
-      it "ミュート解除できること" do
-        expect {
-          delete mute_path(mute)
-        }.to change(Mute, :count).by(-1)
-      end
-
-      it "まだミュートしていないユーザーを再度ミュートできない" do
-        user.mute(other_user) 
-        user.unmute(other_user) # ミュート解除
-        expect {
-          delete mute_path(mute),
-              headers: { "HTTP_REFERER" => user_path(other_user) }
-        }.not_to change(Mute, :count)
-
-        expect(response).to redirect_to(user_path(other_user))      
-      end
-
-    end
-  end
+  include_examples "unified relationship toggle controller"
 end
