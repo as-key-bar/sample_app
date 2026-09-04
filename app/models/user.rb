@@ -156,9 +156,9 @@ class User < ApplicationRecord
 
   # ユーザーをミュートする
   def mute(other_user)
-    unless muting?(other_user) || self == other_user
-      muting << other_user
-    end
+    return false if muting?(other_user) || self == other_user
+    muting << other_user
+    true
   end
 
   # ユーザーをミュート解除する
@@ -175,11 +175,11 @@ class User < ApplicationRecord
 
   # ユーザーをブロックする
   def block(other_user)
-    unless blocking?(other_user) || self == other_user
-      blocking << other_user
-      self.unfollow(other_user) if following?(other_user)
-      other_user.unfollow(self) if other_user.following?(self)
-    end
+    return false if blocking?(other_user) || self == other_user
+    blocking << other_user
+    self.unfollow(other_user) if following?(other_user)
+    other_user.unfollow(self) if other_user.following?(self)
+    true
   end
 
   # ユーザーをブロック解除する
